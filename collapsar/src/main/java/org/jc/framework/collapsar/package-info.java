@@ -1,1 +1,0 @@
-package org.jc.framework.collapsar;

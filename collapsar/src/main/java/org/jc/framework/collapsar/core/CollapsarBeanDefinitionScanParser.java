@@ -65,7 +65,6 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
         String annotationName = Caches.class.getName();
         String projectName = collapsarConfigurationDefinition.getProjectName();
         String connector = collapsarConfigurationDefinition.getConnector();
-        String scannedCachesBeanKey;
         for (String basePackage : basePackages) {
             if (!StringUtils.hasText(basePackage)) {
                 continue;
@@ -82,9 +81,10 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
                 metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
                 annotationMetadata = metadataReader.getAnnotationMetadata();
                 if (cachesFilter.match(metadataReader, this.metadataReaderFactory)) {
-                    if (scannedCachesBeans.contains(scannedCachesBeanKey = projectName + connector + annotationMetadata.getClassName())
-                            && (cachesBeanDefinition = generateCachesBeanDefinition(projectName, connector, annotationMetadata, annotationName)) != null) {
-                        scannedCachesBeans.add(scannedCachesBeanKey);
+                    if (scannedCachesBeans.contains(annotationMetadata.getClassName())) {
+                        throw new CollapsarException("发现重复注册的@Caches Bean[%s]", annotationMetadata.getClassName());
+                    } else if ((cachesBeanDefinition = generateCachesBeanDefinition(projectName, connector, annotationMetadata, annotationName)) != null) {
+                        scannedCachesBeans.add(annotationMetadata.getClassName());
                         cachesBeanDefinitions.add(cachesBeanDefinition);
                     }
                 }

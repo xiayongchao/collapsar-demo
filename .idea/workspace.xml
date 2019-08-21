@@ -2,34 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9585ad9e-368b-496e-99df-20271ffa2834" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/jc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Caches.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/DelOperate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/GetOperate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Key.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Value.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/constant/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarMergedBeanDefinitionPostProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CachesBeanDefinition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CollapsarConfigurationDefinition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/exception/CollapsarException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/util/ArrayUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/util/Strings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/caches/UserCaches.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/modal/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/constant/Operate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeyGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeySupport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/MethodDefinition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/ParamDefinition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/collapsar/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/package-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/target/classes/org/jc/framework/collapsar/annotation/DeleteOperate.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/target/classes/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/target/classes/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collapsar/target/classes/org/jc/framework/collapsar/annotation/SetOperate.class" beforeDir="false" afterPath="$PROJECT_DIR$/collapsar/target/classes/org/jc/framework/collapsar/annotation/SetOperate.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/collapsar/target/" />
+    <ignored path="$PROJECT_DIR$/collapsar-test/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,43 +36,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarMergedBeanDefinitionPostProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="99" column="49" selection-start-line="99" selection-start-column="49" selection-end-line="99" selection-end-column="49" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CollapsarConfigurationDefinition.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
-              <folding>
-                <element signature="e#532#533#0" expanded="true" />
-                <element signature="e#566#567#0" expanded="true" />
-                <element signature="e#607#608#0" expanded="true" />
-                <element signature="e#642#643#0" expanded="true" />
-                <element signature="e#684#685#0" expanded="true" />
-                <element signature="e#722#723#0" expanded="true" />
-                <element signature="e#758#759#0" expanded="true" />
-                <element signature="e#790#791#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+            <state relative-caret-position="418">
+              <caret line="22" column="70" lean-forward="true" selection-start-line="22" selection-start-column="70" selection-end-line="22" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,10 +50,120 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/javassist/javassist/3.22.0-GA/javassist-3.22.0-GA-sources.jar!/javassist/util/proxy/MethodHandler.java">
+        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="46" column="21" lean-forward="true" selection-start-line="46" selection-start-column="18" selection-end-line="47" selection-end-column="31" />
+            <state relative-caret-position="133">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="38">
+              <caret line="2" column="32" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar-test/src/test/java/org/jc/test/collapsar/CollapsarTestApplicationTests.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+              <folding>
+                <element signature="e#545#546#0" expanded="true" />
+                <element signature="e#595#596#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeyGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="513">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+              <folding>
+                <element signature="e#279#280#0" expanded="true" />
+                <element signature="e#313#314#0" expanded="true" />
+                <element signature="e#367#368#0" expanded="true" />
+                <element signature="e#413#414#0" expanded="true" />
+                <element signature="e#450#451#0" expanded="true" />
+                <element signature="e#483#484#0" expanded="true" />
+                <element signature="e#535#536#0" expanded="true" />
+                <element signature="e#579#580#0" expanded="true" />
+                <element signature="e#763#764#0" expanded="true" />
+                <element signature="e#795#796#0" expanded="true" />
+                <element signature="e#845#846#0" expanded="true" />
+                <element signature="e#887#888#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/modal/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+              <folding>
+                <element signature="e#234#235#0" expanded="true" />
+                <element signature="e#268#269#0" expanded="true" />
+                <element signature="e#296#297#0" expanded="true" />
+                <element signature="e#331#332#0" expanded="true" />
+                <element signature="e#362#363#0" expanded="true" />
+                <element signature="e#410#411#0" expanded="true" />
+                <element signature="e#450#451#0" expanded="true" />
+                <element signature="e#485#486#0" expanded="true" />
+                <element signature="e#516#517#0" expanded="true" />
+                <element signature="e#564#565#0" expanded="true" />
+                <element signature="e#604#605#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7902#7903#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/MethodDefinition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+              <folding>
+                <element signature="e#414#415#0" expanded="true" />
+                <element signature="e#464#465#0" expanded="true" />
+                <element signature="e#506#507#0" expanded="true" />
+                <element signature="e#401#402#0" expanded="true" />
+                <element signature="e#434#435#0" expanded="true" />
+                <element signature="e#486#487#0" expanded="true" />
+                <element signature="e#530#531#0" expanded="true" />
+                <element signature="e#565#566#0" expanded="true" />
+                <element signature="e#595#596#0" expanded="true" />
+                <element signature="e#642#643#0" expanded="true" />
+                <element signature="e#680#681#0" expanded="true" />
+                <element signature="e#734#735#0" expanded="true" />
+                <element signature="e#773#774#0" expanded="true" />
+                <element signature="e#848#849#0" expanded="true" />
+                <element signature="e#904#905#0" expanded="true" />
+                <element signature="e#943#944#0" expanded="true" />
+                <element signature="e#976#977#0" expanded="true" />
+                <element signature="e#1030#1031#0" expanded="true" />
+                <element signature="e#1074#1075#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,48 +192,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-291">
-              <caret line="96" column="62" selection-start-line="96" selection-start-column="62" selection-end-line="96" selection-end-column="62" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4407#4408#0" expanded="true" />
-                <element signature="e#4453#4454#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandler.java">
+        <entry file="file://$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/caches/UserCaches.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
-              <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Caches.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="627">
-              <caret line="33" column="23" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="16" column="46" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="46" />
+              <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -170,6 +210,7 @@
       <list>
         <option value="package-info" />
         <option value="AnnotationType" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -184,6 +225,7 @@
       <find>cachesBeanName</find>
       <find>cacheTarget</find>
       <find>cachesClassName</find>
+      <find>this.</find>
     </findStrings>
     <replaceStrings>
       <replace>Collapsar</replace>
@@ -209,7 +251,6 @@
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/EnableSpringJcaConfiguration.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/RemoveOperate.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/DeleteOperate.java" />
-        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/SpringJcaConfiguration.java" />
         <option value="$PROJECT_DIR$/collapsar/pom.xml" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/SpringJcaBeanDefinitionScanParser.java" />
@@ -223,10 +264,26 @@
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/$.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CollapsarConfigurationDefinition.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CachesBeanDefinition.java" />
-        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandler.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarMergedBeanDefinitionPostProcessor.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/$.java" />
+        <option value="$PROJECT_DIR$/collapsar-test/pom.xml" />
+        <option value="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/modal/$.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/constant/Operate.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeySupport.java" />
+        <option value="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/modal/User.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java" />
+        <option value="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/CollapsarTestApplication.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/ParamDefinition.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/MethodDefinition.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodParser.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeyGenerator.java" />
+        <option value="$PROJECT_DIR$/collapsar-test/src/test/java/org/jc/test/collapsar/CollapsarTestApplicationTests.java" />
+        <option value="$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/caches/UserCaches.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheRepository.java" />
         <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java" />
+        <option value="$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodManager.java" />
       </list>
     </option>
   </component>
@@ -263,8 +320,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1697" />
     <option name="height" value="1027" />
   </component>
@@ -276,6 +333,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -356,44 +415,119 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="collapsar" type="462c0819:PsiDirectoryNode" />
-              <item name="exception" type="462c0819:PsiDirectoryNode" />
+              <item name="definition" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
               <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
-              <item name="collapsar" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="collapsar" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar" type="462c0819:PsiDirectoryNode" />
+              <item name="caches" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar" type="462c0819:PsiDirectoryNode" />
+              <item name="modal" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="collapsar-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="collapsar-demo" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="collapsar" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1566319042624" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1566407507282" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.49172795" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="org.jc.framework.collapsar.util" />
+      <recent name="org.jc.framework.collapsar.core" />
       <recent name="org.jc.framework.collapsar.definition" />
+      <recent name="org.jc.framework.collapsar.constant" />
+      <recent name="org.jc.framework.collapsar.util" />
       <recent name="org.jc.framework.collapsar.exception" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jc\开发\workSpace\java\idea\collapsar-demo\collapsar" />
       <recent name="C:\Users\jc\开发\workSpace\java\idea\collapsar-demo\collapsar\src\main\java\org\jc\framework\collapsar\core" />
       <recent name="C:\Users\jc\开发\workSpace\java\idea\collapsar-demo\collapsar\src\main\java\org\jc\framework\collapsar\annotation" />
     </key>
@@ -410,6 +544,36 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="JUnit.CollapsarTestApplicationTests.contextLoads">
+    <configuration name="CollapsarTestApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="collapsar-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.jc.test.collapsar.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.jc.test.collapsar" />
+      <option name="MAIN_CLASS_NAME" value="org.jc.test.collapsar.CollapsarTestApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollapsarTestApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="collapsar-test" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.jc.test.collapsar.CollapsarTestApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.CollapsarTestApplicationTests.contextLoads" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -421,49 +585,97 @@
       <option name="presentableId" value="Default" />
       <updated>1566312130226</updated>
       <workItem from="1566312131574" duration="6931000" />
+      <workItem from="1566398331764" duration="9388000" />
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="CollapsarTestApplicationTests_contextLoads - 2019.08.22 at 01h 08m 22s.xml">
+      <configuration name="CollapsarTestApplicationTests.contextLoads" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="CollapsarTestApplicationTests_contextLoads - 2019.08.22 at 01h 11m 35s.xml">
+      <configuration name="CollapsarTestApplicationTests.contextLoads" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6931000" />
+    <option name="totallyTimeSpent" value="16319000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info id="Web" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Spring" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Java Enterprise" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32962137" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32962137" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997773" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Maven" weight="0.32995737" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Spring" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
+      <window_info anchor="right" id="Bean Validation" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.32995737" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java</url>
+          <line>36</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>thisMethod.getDeclaringClass().getName()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>method.getDeclaringClass().getName()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>method.getDeclaringClass()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>method.getClass()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/package-info.java">
@@ -473,16 +685,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Value.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/$.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/$.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -508,27 +711,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Key.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
@@ -618,20 +800,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Caches.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/javassist/javassist/3.22.0-GA/javassist-3.22.0-GA.jar!/javassist/util/proxy/MethodHandler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="33" column="23" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="23" />
+        <state relative-caret-position="133">
+          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/javassist/javassist/3.22.0-GA/javassist-3.22.0-GA-sources.jar!/javassist/util/proxy/MethodHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="46" column="21" selection-start-line="46" selection-start-column="18" selection-end-line="47" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.java">
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Caches.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="16" column="46" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="46" />
+        <state relative-caret-position="589">
+          <caret line="33" column="23" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -640,29 +836,212 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/CollapsarConfigurationDefinition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="323">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarMergedBeanDefinitionPostProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1423">
+          <caret line="99" column="49" selection-start-line="99" selection-start-column="49" selection-end-line="99" selection-end-column="49" />
           <folding>
-            <element signature="e#532#533#0" expanded="true" />
-            <element signature="e#566#567#0" expanded="true" />
-            <element signature="e#607#608#0" expanded="true" />
-            <element signature="e#642#643#0" expanded="true" />
-            <element signature="e#684#685#0" expanded="true" />
-            <element signature="e#722#723#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#790#791#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar-test/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar-test/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Key.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/Value.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/constant/Operate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding>
+            <element signature="e#265#266#0" expanded="true" />
+            <element signature="e#301#302#0" expanded="true" />
+            <element signature="e#334#335#0" expanded="true" />
+            <element signature="e#363#364#0" expanded="true" />
+            <element signature="e#410#411#0" expanded="true" />
+            <element signature="e#496#497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeySupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/EnableCollapsarConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/TimeUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="574">
+          <caret line="104" column="16" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/annotation/SetOperate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="28" column="49" selection-start-line="28" selection-start-column="49" selection-end-line="28" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/CollapsarTestApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/ParamDefinition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+          <folding>
+            <element signature="e#420#421#0" expanded="true" />
+            <element signature="e#447#448#0" expanded="true" />
+            <element signature="e#485#486#0" expanded="true" />
+            <element signature="e#517#518#0" expanded="true" />
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#575#576#0" expanded="true" />
+            <element signature="e#615#616#0" expanded="true" />
+            <element signature="e#647#648#0" expanded="true" />
+            <element signature="e#679#680#0" expanded="true" />
+            <element signature="e#709#710#0" expanded="true" />
+            <element signature="e#752#753#0" expanded="true" />
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#968#969#0" expanded="true" />
+            <element signature="e#1000#1001#0" expanded="true" />
+            <element signature="e#1047#1048#0" expanded="true" />
+            <element signature="e#1089#1090#0" expanded="true" />
+            <element signature="e#1121#1122#0" expanded="true" />
+            <element signature="e#1152#1153#0" expanded="true" />
+            <element signature="e#1197#1198#0" expanded="true" />
+            <element signature="e#1237#1238#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarBeanDefinitionScanParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-291">
-          <caret line="96" column="62" selection-start-line="96" selection-start-column="62" selection-end-line="96" selection-end-column="62" />
+        <state relative-caret-position="874">
+          <caret line="88" column="21" selection-start-line="88" selection-start-column="21" selection-end-line="88" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4407#4408#0" expanded="true" />
-            <element signature="e#4453#4454#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/modal/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+          <folding>
+            <element signature="e#234#235#0" expanded="true" />
+            <element signature="e#268#269#0" expanded="true" />
+            <element signature="e#296#297#0" expanded="true" />
+            <element signature="e#331#332#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#410#411#0" expanded="true" />
+            <element signature="e#450#451#0" expanded="true" />
+            <element signature="e#485#486#0" expanded="true" />
+            <element signature="e#516#517#0" expanded="true" />
+            <element signature="e#564#565#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/reflect/Method.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="60" column="19" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/definition/MethodDefinition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+          <folding>
+            <element signature="e#414#415#0" expanded="true" />
+            <element signature="e#464#465#0" expanded="true" />
+            <element signature="e#506#507#0" expanded="true" />
+            <element signature="e#401#402#0" expanded="true" />
+            <element signature="e#434#435#0" expanded="true" />
+            <element signature="e#486#487#0" expanded="true" />
+            <element signature="e#530#531#0" expanded="true" />
+            <element signature="e#565#566#0" expanded="true" />
+            <element signature="e#595#596#0" expanded="true" />
+            <element signature="e#642#643#0" expanded="true" />
+            <element signature="e#680#681#0" expanded="true" />
+            <element signature="e#734#735#0" expanded="true" />
+            <element signature="e#773#774#0" expanded="true" />
+            <element signature="e#848#849#0" expanded="true" />
+            <element signature="e#904#905#0" expanded="true" />
+            <element signature="e#943#944#0" expanded="true" />
+            <element signature="e#976#977#0" expanded="true" />
+            <element signature="e#1030#1031#0" expanded="true" />
+            <element signature="e#1074#1075#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7902#7903#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -688,44 +1067,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CollapsarMergedBeanDefinitionPostProcessor.java">
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheKeyGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="99" column="49" selection-start-line="99" selection-start-column="49" selection-end-line="99" selection-end-column="49" />
+        <state relative-caret-position="513">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#279#280#0" expanded="true" />
+            <element signature="e#313#314#0" expanded="true" />
+            <element signature="e#367#368#0" expanded="true" />
+            <element signature="e#413#414#0" expanded="true" />
+            <element signature="e#450#451#0" expanded="true" />
+            <element signature="e#483#484#0" expanded="true" />
+            <element signature="e#535#536#0" expanded="true" />
+            <element signature="e#579#580#0" expanded="true" />
+            <element signature="e#763#764#0" expanded="true" />
+            <element signature="e#795#796#0" expanded="true" />
+            <element signature="e#845#846#0" expanded="true" />
+            <element signature="e#887#888#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandler.java">
+    <entry file="file://$PROJECT_DIR$/collapsar-test/src/main/java/org/jc/test/collapsar/caches/UserCaches.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/javassist/javassist/3.22.0-GA/javassist-3.22.0-GA.jar!/javassist/util/proxy/MethodHandler.class">
+    <entry file="file://$PROJECT_DIR$/collapsar-test/src/test/java/org/jc/test/collapsar/CollapsarTestApplicationTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
+        <state relative-caret-position="228">
+          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+          <folding>
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#595#596#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/javassist/javassist/3.22.0-GA/javassist-3.22.0-GA-sources.jar!/javassist/util/proxy/MethodHandler.java">
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CacheRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="46" column="21" lean-forward="true" selection-start-line="46" selection-start-column="18" selection-end-line="47" selection-end-column="31" />
+        <state relative-caret-position="38">
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesMethodManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/collapsar/src/main/java/org/jc/framework/collapsar/core/CachesBeanMethodHandlerImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+        <state relative-caret-position="418">
+          <caret line="22" column="70" lean-forward="true" selection-start-line="22" selection-start-column="70" selection-end-line="22" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

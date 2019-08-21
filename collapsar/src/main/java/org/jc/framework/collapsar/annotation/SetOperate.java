@@ -14,14 +14,6 @@ import java.util.concurrent.TimeUnit;
 @Documented
 public @interface SetOperate {
     /**
-     * 是否是原子操作
-     * 默认为不是原子操作
-     *
-     * @return
-     */
-    boolean atomic() default false;
-
-    /**
      * 缓存过期时间，单位是${@link #unit()}
      * 默认为永远不过期
      *
@@ -34,5 +26,5 @@ public @interface SetOperate {
      *
      * @return
      */
-    TimeUnit unit() default TimeUnit.SECONDS;
+    TimeUnit unit() default TimeUnit.MILLISECONDS;
 }
