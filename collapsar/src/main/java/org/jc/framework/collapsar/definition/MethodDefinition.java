@@ -12,6 +12,11 @@ public class MethodDefinition {
     private Operate operate;
     private ParamDefinition[] paramDefinitions;
     private Class<?> returnType;
+    /**
+     * 缓存过期时间
+     */
+    private long expire = 0;
+    private int valueParameterIndex = -1;
 
     public String getClassName() {
         return className;
@@ -51,5 +56,21 @@ public class MethodDefinition {
 
     public void setReturnType(Class<?> returnType) {
         this.returnType = returnType;
+    }
+
+    public long getExpire() {
+        return expire;
+    }
+
+    public void setExpire(long expire) {
+        this.expire = expire;
+    }
+
+    public int getValueParameterIndex() {
+        return valueParameterIndex;
+    }
+
+    public void setValueParameterIndex(int valueParameterIndex) {
+        this.valueParameterIndex = valueParameterIndex;
     }
 }

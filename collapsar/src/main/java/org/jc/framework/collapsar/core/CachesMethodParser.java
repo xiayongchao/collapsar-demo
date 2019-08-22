@@ -11,8 +11,10 @@ import org.springframework.util.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * @author jc
@@ -50,6 +52,8 @@ public class CachesMethodParser {
                         methodDefinition.getClassName(), methodDefinition.getMethodName(), Operate.SET.getPrefix());
             }
             methodDefinition.setOperate(Operate.SET);
+            SetOperate setOperate = method.getDeclaredAnnotation(SetOperate.class);
+            methodDefinition.setExpire(ExpireCalculator.calc(setOperate.expire(), setOperate.unit()));
         } else if (method.isAnnotationPresent(GetOperate.class)) {
             if (!method.getName().startsWith(Operate.GET.getPrefix())) {
                 throw new CollapsarException("[@GetOperate]注解方法[%s#%s]请使用['%s']前缀",
@@ -134,14 +138,23 @@ public class CachesMethodParser {
                             methodDefinition.getClassName(), methodDefinition.getMethodName(), targetType.getName());
                 }
                 keyOrder = -1;
+                methodDefinition.setValueParameterIndex(i);
             } else {
                 if ((keyOrder = parameterKey2OrderMap.get(name)) == null) {
                     throw new CollapsarException("方法[%s#%s]未定义的@Key参数[%s]",
                             methodDefinition.getClassName(), methodDefinition.getMethodName(), name);
                 }
+                parameterKey2OrderMap.remove(name);
             }
             paramDefinitions[i] = new ParamDefinition(parameterTypes[i], name, isValue, i, keyOrder);
         }
+        if (parameterKey2OrderMap.size() > 0) {
+            StringJoiner stringJoiner = new StringJoiner(",");
+            parameterKey2OrderMap.keySet().forEach(stringJoiner::add);
+            throw new CollapsarException("方法[%s#%s]未提供的命名参数[%s]",
+                    methodDefinition.getClassName(), methodDefinition.getMethodName(), stringJoiner.toString());
+        }
+        Arrays.sort(paramDefinitions);
         methodDefinition.setParamDefinitions(paramDefinitions);
         return this;
     }

@@ -11,10 +11,11 @@ import org.springframework.context.annotation.Role;
  */
 @Configuration
 public class CollapsarConfiguration {
+
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.core.CachesBeanMethodHandlerImpl")
-    public CachesBeanMethodHandler cachesBeanMethodHandler() {
-        return new CachesBeanMethodHandlerImpl();
+    public CachesBeanMethodHandler cachesBeanMethodHandler(CacheRepository cacheRepository) {
+        return new CachesBeanMethodHandlerImpl(cacheRepository);
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)

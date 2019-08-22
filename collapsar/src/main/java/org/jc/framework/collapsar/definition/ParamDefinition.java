@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
  * @author xiayc
  * @date 2019/3/29
  */
-public class ParamDefinition {
+public class ParamDefinition implements Comparable {
     private Type type;
     private String name;
     private boolean isValue;
@@ -59,5 +59,20 @@ public class ParamDefinition {
 
     public void setKeyOrder(int keyOrder) {
         this.keyOrder = keyOrder;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof ParamDefinition) {
+            ParamDefinition that = (ParamDefinition) o;
+            if (this.keyOrder > that.keyOrder) {
+                return 1;
+            } else if (this.keyOrder == that.keyOrder) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
     }
 }
