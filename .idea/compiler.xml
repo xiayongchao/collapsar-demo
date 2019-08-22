@@ -10,10 +10,10 @@
         <module name="collapsar-test" />
       </profile>
     </annotationProcessing>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="collapsar-test" options="-parameters" />
-    </option>
+    <bytecodeTargetLevel>
+      <module name="collapsar" target="1.8" />
+      <module name="collapsar-demo" target="1.8" />
+      <module name="collapsar-test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
