@@ -1,4 +1,4 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.support;
 
 import org.jc.framework.collapsar.annotation.*;
 import org.jc.framework.collapsar.constant.Operate;
@@ -54,19 +54,30 @@ public class CachesMethodParser {
             methodDefinition.setOperate(Operate.SET);
             SetOperate setOperate = method.getDeclaredAnnotation(SetOperate.class);
             methodDefinition.setExpire(ExpireCalculator.calc(setOperate.expire(), setOperate.unit()));
-        } else if (method.isAnnotationPresent(GetOperate.class)) {
+        }
+        if (method.isAnnotationPresent(GetOperate.class)) {
+            if (methodDefinition.getOperate() != null) {
+                throw new CollapsarException("请在方法[%s#%s]上重复使用注解[@SetOperate/@GetOperate/@DelOperate]",
+                        methodDefinition.getClassName(), methodDefinition.getMethodName());
+            }
             if (!method.getName().startsWith(Operate.GET.getPrefix())) {
                 throw new CollapsarException("[@GetOperate]注解方法[%s#%s]请使用['%s']前缀",
                         methodDefinition.getClassName(), methodDefinition.getMethodName(), Operate.GET.getPrefix());
             }
             methodDefinition.setOperate(Operate.GET);
-        } else if (method.isAnnotationPresent(DelOperate.class)) {
+        }
+        if (method.isAnnotationPresent(DelOperate.class)) {
+            if (methodDefinition.getOperate() != null) {
+                throw new CollapsarException("请在方法[%s#%s]上重复使用注解[@SetOperate/@GetOperate/@DelOperate]",
+                        methodDefinition.getClassName(), methodDefinition.getMethodName());
+            }
             if (!method.getName().startsWith(Operate.DEL.getPrefix())) {
                 throw new CollapsarException("[@DelOperate]注解方法[%s#%s]请使用['%s']前缀",
                         methodDefinition.getClassName(), methodDefinition.getMethodName(), Operate.DEL.getPrefix());
             }
             methodDefinition.setOperate(Operate.DEL);
-        } else {
+        }
+        if (methodDefinition.getOperate() == null) {
             throw new CollapsarException("请在方法[%s#%s]上使用注解[@SetOperate/@GetOperate/@DelOperate]",
                     methodDefinition.getClassName(), methodDefinition.getMethodName());
         }

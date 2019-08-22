@@ -1,4 +1,4 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.proxy;
 
 import javassist.util.proxy.MethodHandler;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;

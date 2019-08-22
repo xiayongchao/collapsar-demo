@@ -1,8 +1,11 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.support;
 
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.CacheKeyGenerator;
+import org.jc.framework.collapsar.support.CachesMethodParser;
+import org.jc.framework.collapsar.support.CachesMethodSupporter;
 
 import java.lang.reflect.Method;
 import java.util.Map;

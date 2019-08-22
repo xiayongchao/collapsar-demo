@@ -1,4 +1,4 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.extend;
 
 /**
  * @author xiayc

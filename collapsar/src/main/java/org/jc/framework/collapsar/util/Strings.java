@@ -7,6 +7,9 @@ import org.springframework.util.StringUtils;
  * @date 2019/3/29
  */
 public final class Strings {
+    public final static String EMPTY_STRING = "";
+    public final static String NULL_STRING = "\u0000";
+
     /**
      * 首字母小写
      *

@@ -1,6 +1,6 @@
 package org.jc.framework.collapsar.annotation;
 
-import org.jc.framework.collapsar.constant.Constants;
+import org.jc.framework.collapsar.util.Strings;
 
 import java.lang.annotation.*;
 
@@ -17,14 +17,14 @@ public @interface Caches {
      *
      * @return
      */
-    String value() default Constants.EMPTY_STRING;
+    String value() default Strings.EMPTY_STRING;
 
     /**
      * 模块名/缓存二级结构名称
      *
      * @return
      */
-    String moduleName() default Constants.NULL_STRING;
+    String moduleName() default Strings.NULL_STRING;
 
     /**
      * 缓存对象的类型

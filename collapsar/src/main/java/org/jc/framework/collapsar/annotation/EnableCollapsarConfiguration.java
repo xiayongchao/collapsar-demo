@@ -1,7 +1,7 @@
 package org.jc.framework.collapsar.annotation;
 
-import org.jc.framework.collapsar.constant.Constants;
 import org.jc.framework.collapsar.core.CollapsarConfiguration;
+import org.jc.framework.collapsar.util.Strings;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -20,7 +20,7 @@ public @interface EnableCollapsarConfiguration {
      *
      * @return
      */
-    String projectName() default Constants.EMPTY_STRING;
+    String projectName() default Strings.EMPTY_STRING;
 
     /**
      * 扫描包名列表

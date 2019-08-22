@@ -1,6 +1,9 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.proxy;
 
 
+import org.jc.framework.collapsar.extend.CacheRepository;
+import org.jc.framework.collapsar.support.CachesMethodManager;
+import org.jc.framework.collapsar.support.CachesMethodSupporter;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 

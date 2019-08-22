@@ -1,7 +1,8 @@
-package org.jc.framework.collapsar.core;
+package org.jc.framework.collapsar.support;
 
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.MethodDefinition;
+import org.jc.framework.collapsar.support.CacheKeyGenerator;
 
 /**
  * @author jc

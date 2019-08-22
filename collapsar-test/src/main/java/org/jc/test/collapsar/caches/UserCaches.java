@@ -10,4 +10,7 @@ import org.jc.test.collapsar.modal.User;
 public interface UserCaches {
     @SetOperate
     void setById(@Key("id") Long id, @Value User user);
+
+    @SetOperate
+    void setByIdAndUserName(@Key("id") Long id, @Key("userName") String userName, @Value User user);
 }

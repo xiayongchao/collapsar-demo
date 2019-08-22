@@ -7,6 +7,7 @@ import org.jc.framework.collapsar.annotation.*;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.CollapsarConfigurationDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.proxy.CachesBeanMethodHandler;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
