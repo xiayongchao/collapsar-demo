@@ -17,7 +17,6 @@ public class CollapsarTestApplicationTests {
     @Test
     public void contextLoads() {
         userCaches.setById(1L, new User());
-        userCaches.setByIdAndUserName(1L, "xyc", new User());
     }
 
 }

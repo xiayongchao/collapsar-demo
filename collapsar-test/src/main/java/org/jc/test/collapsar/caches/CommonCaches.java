@@ -7,6 +7,6 @@ import org.jc.framework.collapsar.annotation.MultiCaches;
  * @date 2019/8/23
  */
 @MultiCaches
-public class CommonCaches {
+public interface CommonCaches {
 
 }
