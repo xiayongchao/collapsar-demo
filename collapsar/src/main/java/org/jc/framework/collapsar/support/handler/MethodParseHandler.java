@@ -9,7 +9,7 @@ public abstract class MethodParseHandler {
     private MethodParseHandler nextHandler;
 
     //处理方法
-    public abstract boolean handleMethod(Method method, MethodDefinition methodDefinition);
+    public abstract MethodDefinition handleMethod(Method method, Class<?> targetType);
 
     public MethodParseHandler getNextHandler() {
         return nextHandler;

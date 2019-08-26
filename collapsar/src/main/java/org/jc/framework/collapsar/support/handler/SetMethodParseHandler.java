@@ -4,7 +4,8 @@ import org.jc.framework.collapsar.annotation.SetOperate;
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
-import org.jc.framework.collapsar.support.ExpireCalculator;
+import org.jc.framework.collapsar.support.parser.MethodParser;
+import org.jc.framework.collapsar.util.Methods;
 
 import java.lang.reflect.Method;
 
@@ -14,22 +15,14 @@ import java.lang.reflect.Method;
  */
 public class SetMethodParseHandler extends MethodParseHandler {
     @Override
-    public boolean handleMethod(Method method, MethodDefinition methodDefinition) {
+    public MethodDefinition handleMethod(Method method, Class<?> targetType) {
         if (!method.isAnnotationPresent(SetOperate.class)) {
             if (getNextHandler() != null) {
-                return getNextHandler().handleMethod(method, methodDefinition);
+                return getNextHandler().handleMethod(method, targetType);
             }
-            throw new CollapsarException("请在方法[%s#%s]上使用注解[@SetOperate/@GetOperate/@DelOperate]",
-                    methodDefinition.getClassName(), methodDefinition.getMethodName());
+            throw new CollapsarException("请在方法[%s]上使用注解[@SetOperate/@GetOperate/@DelOperate]",
+                    Methods.getMethodFullName(method));
         }
-        if (!method.getName().startsWith(Operate.SET.getPrefix())) {
-            throw new CollapsarException("[@SetOperate]注解方法[%s#%s]请使用['%s']前缀",
-                    methodDefinition.getClassName(), methodDefinition.getMethodName(), Operate.SET.getPrefix());
-        }
-        methodDefinition.setOperate(Operate.SET);
-        SetOperate setOperate = method.getDeclaredAnnotation(SetOperate.class);
-        methodDefinition.setExpire(ExpireCalculator.calc(setOperate.expire(), setOperate.unit()));
-
-        return false;
+        return MethodParser.parseMethod(Operate.SET, method, targetType);
     }
 }
