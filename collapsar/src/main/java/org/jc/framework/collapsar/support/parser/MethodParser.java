@@ -2,16 +2,21 @@ package org.jc.framework.collapsar.support.parser;
 
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.MethodDefinition;
+import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.handler.ParameterParseHandler;
 import org.jc.framework.collapsar.util.Methods;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * @author jc
  * @date 2019/8/26 21:59
  */
 public abstract class MethodParser {
+    protected final static String METHOD_NAME_SEPARATOR = "And";
     protected final Method method;
     protected final Class<?> targetType;
     protected final String methodFullName;
@@ -49,13 +54,22 @@ public abstract class MethodParser {
         return this;
     }
 
-
     MethodParser parseMethodOperate() {
         return this;
     }
 
     MethodParser parseMethodParameter() {
         return this;
+    }
+
+    ParameterDefinition[] getParameterDefinitions() {
+        Type[] parameterTypes = method.getGenericParameterTypes();
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        ParameterDefinition[] parameterDefinitions = new ParameterDefinition[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            parameterDefinitions[i] = ParameterParseHandler.praseHandleParameter(methodFullName, parameterTypes[i], parameterAnnotations[i]);
+        }
+        return parameterDefinitions;
     }
 
     MethodParser parseMethodReturnType() {
