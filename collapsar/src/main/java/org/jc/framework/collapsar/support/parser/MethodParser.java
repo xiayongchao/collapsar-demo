@@ -105,9 +105,8 @@ public abstract class MethodParser {
         }
         String[] names;
         for (int i = 0; i < parameterDefinitions.length; i++) {
-            //然后再从@Keys和@Value注解匹配
-            if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())
-                    && !ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+            //然后再从@Keys
+            if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 continue;
             }
             if (ArrayUtils.isEmpty(names = parameterDefinition.getNames())) {
@@ -116,6 +115,41 @@ public abstract class MethodParser {
             for (String name : names) {
                 if (!parameterName.equals(name)) {
                     continue;
+                }
+                try {
+                    Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
+                    declaredField.setAccessible(true);
+                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+                } catch (NoSuchFieldException e) {
+                    throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
+                }
+                break;
+            }
+        }
+        for (int i = 0; i < parameterDefinitions.length; i++) {
+            //然后再从@Value注解匹配
+            if (!ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+                continue;
+            }
+            if (ArrayUtils.isEmpty(names = parameterDefinition.getNames())) {
+                continue;
+            }
+            for (String name : names) {
+                if (!parameterName.equals(name)) {
+                    continue;
+                }
+                if (names.length == 1) {
+                    if (parameterDefinition.getType().equals(String.class)
+                            || parameterDefinition.getType().equals(Byte.class)
+                            || parameterDefinition.getType().equals(Short.class)
+                            || parameterDefinition.getType().equals(Integer.class)
+                            || parameterDefinition.getType().equals(Long.class)
+                            || parameterDefinition.getType().equals(Float.class)
+                            || parameterDefinition.getType().equals(Double.class)
+                            || parameterDefinition.getType().equals(Boolean.class)
+                            || parameterDefinition.getType().equals(Character.class)) {
+                        return new SimpleParameterKeyBuilder(i, parameterName);
+                    }
                 }
                 try {
                     Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
