@@ -5,13 +5,11 @@ import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.support.ExpireCalculator;
+import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
 import org.jc.framework.collapsar.util.ArrayUtils;
-import org.jc.framework.collapsar.util.Strings;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author jc
@@ -44,11 +42,8 @@ public class SetMethodParser extends MethodParser {
         if (ArrayUtils.isEmpty(parameterDefinitions)) {
             throw new CollapsarException("[@SetOperate]方法[%s]入参数目不能为0", methodFullName);
         }
-        String[] parameterKeys = nominateKey.split(METHOD_NAME_SEPARATOR);
-        Map<String, Integer> parameterKey2IndexMap = new HashMap<>(parameterKeys.length);
-        for (int i = 0; i < parameterKeys.length; i++) {
-            parameterKey2IndexMap.put(Strings.standingInitialLowercase(parameterKeys[i]), i);
-        }
+        String[] parameterNames = nominateKey.split(METHOD_NAME_SEPARATOR);
+        ParameterKeyBuilder[] parameterKeyBuilders = getParameterKeyBuilders(parameterNames, parameterDefinitions);
 
         methodDefinition.setParamDefinitions(paramDefinitions);
         return this;

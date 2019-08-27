@@ -3,7 +3,6 @@ package org.jc.framework.collapsar.support.handler;
 import org.jc.framework.collapsar.annotation.Value;
 import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.ParameterDefinition;
-import org.jc.framework.collapsar.exception.CollapsarException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -19,7 +18,7 @@ public class ValueParameterParseHandler extends ParameterParseHandler {
             if (getNextHandler() != null) {
                 return getNextHandler().handleParameter(methodFullName, parameterType, annotation);
             }
-            throw new CollapsarException("请在方法[%s]的形参上使用注解[@Key/@Keys/@Value]", methodFullName);
+            return getDefaultParameterDefinition(parameterType);
         }
 
         ParameterDefinition parameterDefinition = new ParameterDefinition();

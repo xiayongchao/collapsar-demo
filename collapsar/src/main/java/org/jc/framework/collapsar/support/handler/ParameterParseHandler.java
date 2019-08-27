@@ -3,6 +3,7 @@ package org.jc.framework.collapsar.support.handler;
 import org.jc.framework.collapsar.annotation.Key;
 import org.jc.framework.collapsar.annotation.Keys;
 import org.jc.framework.collapsar.annotation.Value;
+import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.util.ArrayUtils;
@@ -18,10 +19,19 @@ import java.util.List;
  * @date 2019/8/26 23:13
  */
 public abstract class ParameterParseHandler {
-    //下一个处理器
+    /**
+     * 下一个处理器
+     */
     private ParameterParseHandler nextHandler;
 
-    //处理方法
+    /**
+     * 处理方法
+     *
+     * @param methodFullName
+     * @param parameterType
+     * @param annotation
+     * @return
+     */
     public abstract ParameterDefinition handleParameter(String methodFullName, Type parameterType, Annotation annotation);
 
     public ParameterParseHandler getNextHandler() {
@@ -30,6 +40,14 @@ public abstract class ParameterParseHandler {
 
     public void setNextHandler(ParameterParseHandler nextHandler) {
         this.nextHandler = nextHandler;
+    }
+
+    static ParameterDefinition getDefaultParameterDefinition(Type parameterType) {
+        ParameterDefinition parameterDefinition = new ParameterDefinition();
+        parameterDefinition.setType(parameterType);
+        parameterDefinition.setParamType(ParamType.NONE);
+        parameterDefinition.setNames(null);
+        return parameterDefinition;
     }
 
     private static final ParameterParseHandler parameterParseHandler = init();
@@ -43,7 +61,7 @@ public abstract class ParameterParseHandler {
         return keyParameterParseHandler;
     }
 
-    public static ParameterDefinition praseHandleParameter(String methodFullName, Type parameterType, Annotation[] annotations) {
+    public static ParameterDefinition parseHandleParameter(String methodFullName, Type parameterType, Annotation[] annotations) {
         List<Annotation> usefulAnnotations = new ArrayList<>();
         if (ArrayUtils.isNotEmpty(annotations)) {
             for (Annotation annotation : annotations) {

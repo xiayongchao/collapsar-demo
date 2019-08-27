@@ -1,15 +1,24 @@
 package org.jc.framework.collapsar.support.parser;
 
 import org.jc.framework.collapsar.constant.Operate;
+import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
+import org.jc.framework.collapsar.support.builder.ReflectParameterKeyBuilder;
+import org.jc.framework.collapsar.support.builder.SimpleParameterKeyBuilder;
 import org.jc.framework.collapsar.support.handler.ParameterParseHandler;
+import org.jc.framework.collapsar.util.ArrayUtils;
 import org.jc.framework.collapsar.util.Methods;
+import org.jc.framework.collapsar.util.Strings;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author jc
@@ -66,10 +75,82 @@ public abstract class MethodParser {
         Type[] parameterTypes = method.getGenericParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         ParameterDefinition[] parameterDefinitions = new ParameterDefinition[parameterTypes.length];
+        ParameterDefinition parameterDefinition;
+        Set<String> existNameSet = new HashSet<>();
         for (int i = 0; i < parameterTypes.length; i++) {
-            parameterDefinitions[i] = ParameterParseHandler.praseHandleParameter(methodFullName, parameterTypes[i], parameterAnnotations[i]);
+            parameterDefinition = ParameterParseHandler.parseHandleParameter(methodFullName, parameterTypes[i], parameterAnnotations[i]);
+            if (!ParamType.NONE.equals(parameterDefinition.getParamType())) {
+                for (String name : parameterDefinition.getNames()) {
+                    if (existNameSet.contains(name)) {
+                        throw new CollapsarException("方法[%s]不允许提供重复的Key命名", methodFullName);
+                    }
+                    existNameSet.add(name);
+                }
+            }
+            parameterDefinitions[i] = parameterDefinition;
         }
         return parameterDefinitions;
+    }
+
+    private ParameterKeyBuilder getParameterKeyBuilder(String parameterName, ParameterDefinition[] parameterDefinitions) {
+        ParameterDefinition parameterDefinition;
+        for (int i = 0; i < parameterDefinitions.length; i++) {
+            //优先从@Key注解匹配
+            if (!ParamType.KEY.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+                continue;
+            }
+            if (parameterName.equals(parameterDefinition.getNames()[0])) {
+                return new SimpleParameterKeyBuilder(i, parameterName);
+            }
+        }
+        String[] names;
+        for (int i = 0; i < parameterDefinitions.length; i++) {
+            //然后再从@Keys和@Value注解匹配
+            if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())
+                    && !ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+                continue;
+            }
+            if (ArrayUtils.isEmpty(names = parameterDefinition.getNames())) {
+                continue;
+            }
+            for (String name : names) {
+                if (!parameterName.equals(name)) {
+                    continue;
+                }
+                try {
+                    Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
+                    declaredField.setAccessible(true);
+                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+                } catch (NoSuchFieldException e) {
+                    throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
+                }
+                break;
+            }
+        }
+        for (int i = 0; i < parameterDefinitions.length; i++) {
+            if (ParamType.NONE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+
+            }
+        }
+
+//        else {
+//            try {
+//                Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
+//                declaredField.setAccessible(true);
+//                return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+//            } catch (NoSuchFieldException e) {
+//            }
+//        }
+
+    }
+
+    ParameterKeyBuilder[] getParameterKeyBuilders(String[] parameterNames, ParameterDefinition[] parameterDefinitions) {
+        ParameterKeyBuilder[] parameterKeyBuilders = new ParameterKeyBuilder[parameterNames.length];
+        for (int i = 0; i < parameterNames.length; i++) {
+            parameterKeyBuilders[i] = getParameterKeyBuilder(Strings.standingInitialLowercase(parameterNames[i])
+                    , parameterDefinitions);
+        }
+        return parameterKeyBuilders;
     }
 
     MethodParser parseMethodReturnType() {
