@@ -3,9 +3,8 @@ package org.jc.framework.collapsar.support;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
-import org.jc.framework.collapsar.support.CacheKeyGenerator;
-import org.jc.framework.collapsar.support.CachesMethodParser;
-import org.jc.framework.collapsar.support.CachesMethodSupporter;
+import org.jc.framework.collapsar.support.handler.MethodParseHandler;
+import org.jc.framework.collapsar.util.Methods;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -23,15 +22,14 @@ public class CachesMethodManager {
         if (cachesMethodSupporterMap.containsKey(methodFullName)) {
             throw new CollapsarException("请不要重复注册@Caches Bean方法['%s']", methodFullName);
         }
-        final CacheKeyGenerator cacheKeyGenerator = new CacheKeyGenerator(cachesBeanDefinition.getProjectName(),
-                cachesBeanDefinition.getModuleName(), cachesBeanDefinition.getConnector());
-        final MethodDefinition methodDefinition = CachesMethodParser.parseMethod(method, cachesBeanDefinition.getTargetType());
-        final CachesMethodSupporter cachesMethodSupporter = new CachesMethodSupporter(methodFullName, cacheKeyGenerator, methodDefinition);
+        final CachesMethod cachesMethod = MethodParseHandler.parseHandleMethod(method, new MethodDefinition(cachesBeanDefinition));
+
+        final CachesMethodSupporter cachesMethodSupporter = new CachesMethodSupporter(cachesMethod);
         cachesMethodSupporterMap.put(methodFullName, cachesMethodSupporter);
     }
 
     public CachesMethodSupporter get(Method method) {
-        final String methodFullName = String.format("%s#%s", method.getDeclaringClass().getName(), method.getName());
+        final String methodFullName = Methods.getMethodFullName(method);
         CachesMethodSupporter cachesMethodSupporter = cachesMethodSupporterMap.get(methodFullName);
         if (cachesMethodSupporter == null) {
             throw new CollapsarException("无法获取未注册的@Caches Bean方法['%s']", methodFullName);

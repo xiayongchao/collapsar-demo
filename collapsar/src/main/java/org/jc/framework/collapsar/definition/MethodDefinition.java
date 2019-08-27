@@ -1,76 +1,40 @@
 package org.jc.framework.collapsar.definition;
 
-import org.jc.framework.collapsar.constant.Operate;
-
 /**
- * @author xiayc
- * @date 2019/3/29
+ * @author jc
+ * @date 2019/8/28 0:32
  */
 public class MethodDefinition {
-    private String className;
-    private String methodName;
-    private Operate operate;
-    private ParamDefinition[] paramDefinitions;
-    private Class<?> returnType;
-    /**
-     * 缓存过期时间
-     */
-    private long expire = 0;
-    private int valueParameterIndex = -1;
+    private final String projectName;
+    private final String moduleName;
+    private final String connector;
+    private final Class<?> targetType;
 
-    public String getClassName() {
-        return className;
+    public MethodDefinition(CachesBeanDefinition cachesBeanDefinition) {
+        this(cachesBeanDefinition.getProjectName(), cachesBeanDefinition.getModuleName(),
+                cachesBeanDefinition.getConnector(), cachesBeanDefinition.getTargetType());
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public MethodDefinition(String projectName, String moduleName, String connector, Class<?> targetType) {
+        this.projectName = projectName;
+        this.moduleName = moduleName;
+        this.connector = connector;
+        this.targetType = targetType;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public String getModuleName() {
+        return moduleName;
     }
 
-    public Operate getOperate() {
-        return operate;
+    public String getConnector() {
+        return connector;
     }
 
-    public void setOperate(Operate operate) {
-        this.operate = operate;
-    }
-
-    public ParamDefinition[] getParamDefinitions() {
-        return paramDefinitions;
-    }
-
-    public void setParamDefinitions(ParamDefinition[] paramDefinitions) {
-        this.paramDefinitions = paramDefinitions;
-    }
-
-    public Class<?> getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(Class<?> returnType) {
-        this.returnType = returnType;
-    }
-
-    public long getExpire() {
-        return expire;
-    }
-
-    public void setExpire(long expire) {
-        this.expire = expire;
-    }
-
-    public int getValueParameterIndex() {
-        return valueParameterIndex;
-    }
-
-    public void setValueParameterIndex(int valueParameterIndex) {
-        this.valueParameterIndex = valueParameterIndex;
+    public Class<?> getTargetType() {
+        return targetType;
     }
 }

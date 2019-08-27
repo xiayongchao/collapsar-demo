@@ -5,6 +5,7 @@ import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.CachesMethod;
 import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
 import org.jc.framework.collapsar.support.builder.ReflectParameterKeyBuilder;
 import org.jc.framework.collapsar.support.builder.SimpleParameterKeyBuilder;
@@ -12,6 +13,8 @@ import org.jc.framework.collapsar.support.handler.ParameterParseHandler;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.jc.framework.collapsar.util.Methods;
 import org.jc.framework.collapsar.util.Strings;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -19,6 +22,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * @author jc
@@ -27,40 +31,34 @@ import java.util.Set;
 public abstract class MethodParser {
     protected final static String METHOD_NAME_SEPARATOR = "And";
     protected final Method method;
-    protected final Class<?> targetType;
-    protected final String methodFullName;
     protected final MethodDefinition methodDefinition;
+    protected final String methodFullName;
+    protected final CachesMethod cachesMethod;
 
-    MethodParser(Method method, Class<?> targetType) {
+    MethodParser(Method method, MethodDefinition methodDefinition) {
         this.method = method;
-        this.targetType = targetType;
+        this.methodDefinition = methodDefinition;
         this.methodFullName = Methods.getMethodFullName(method);
-        this.methodDefinition = new MethodDefinition();
+        this.cachesMethod = new CachesMethod(methodDefinition.getProjectName(),
+                methodDefinition.getModuleName(), methodDefinition.getConnector(), this.methodFullName);
     }
 
-    private static MethodParser getInstance(Operate operate, Method method, Class<?> targetType) {
+    private static MethodParser getInstance(Operate operate, Method method, MethodDefinition methodDefinition) {
         switch (operate) {
             case SET:
-                return new SetMethodParser(method, targetType);
+                return new SetMethodParser(method, methodDefinition);
+            case GET:
+                return new GetMethodParser(method, methodDefinition);
+            case DEL:
+                return new DelMethodParser(method, methodDefinition);
             default:
-                throw new CollapsarException("未知的@Caches方法[%s$%s]操作类型[%s]", method.getDeclaringClass().getName(), method.getName(), operate);
+                throw new CollapsarException("未知的@Caches方法[%s]操作类型[%s]", Methods.getMethodFullName(method), operate);
         }
     }
 
-    public static MethodDefinition parseMethod(Operate operate, Method method, Class<?> targetType) {
-        return getInstance(operate, method, targetType).parseClassName()
-                .parseMethodName().parseMethodOperate()
+    public static CachesMethod parseMethod(Operate operate, Method method, MethodDefinition methodDefinition) {
+        return getInstance(operate, method, methodDefinition).parseMethodOperate()
                 .parseMethodParameter().parseMethodReturnType().get();
-    }
-
-    MethodParser parseClassName() {
-        methodDefinition.setClassName(method.getDeclaringClass().getName());
-        return this;
-    }
-
-    MethodParser parseMethodName() {
-        methodDefinition.setMethodName(method.getName());
-        return this;
     }
 
     MethodParser parseMethodOperate() {
@@ -75,21 +73,76 @@ public abstract class MethodParser {
         Type[] parameterTypes = method.getGenericParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         ParameterDefinition[] parameterDefinitions = new ParameterDefinition[parameterTypes.length];
-        ParameterDefinition parameterDefinition;
-        Set<String> existNameSet = new HashSet<>();
+
         for (int i = 0; i < parameterTypes.length; i++) {
-            parameterDefinition = ParameterParseHandler.parseHandleParameter(methodFullName, parameterTypes[i], parameterAnnotations[i]);
-            if (!ParamType.NONE.equals(parameterDefinition.getParamType())) {
-                for (String name : parameterDefinition.getNames()) {
-                    if (existNameSet.contains(name)) {
-                        throw new CollapsarException("方法[%s]不允许提供重复的Key命名", methodFullName);
-                    }
-                    existNameSet.add(name);
-                }
-            }
-            parameterDefinitions[i] = parameterDefinition;
+            parameterDefinitions[i] = ParameterParseHandler.parseHandleParameter(methodFullName, parameterTypes[i], parameterAnnotations[i]);
         }
         return parameterDefinitions;
+    }
+
+    ParameterKeyBuilder[] getParameterKeyBuilders(String[] parameterNames, ParameterDefinition[] parameterDefinitions) {
+        Set<String> provideNames = new HashSet<>();
+        for (ParameterDefinition parameterDefinition : parameterDefinitions) {
+            if (ParamType.NONE.equals(parameterDefinition.getParamType())) {
+                continue;
+            }
+            for (String name : parameterDefinition.getNames()) {
+                if (StringUtils.isEmpty(name)) {
+                    continue;
+                }
+                if (provideNames.contains(name)) {
+                    throw new CollapsarException("方法[%s]不允许提供重复的Key命名[%s]", methodFullName, name);
+                }
+                provideNames.add(name);
+            }
+        }
+
+        ParameterKeyBuilder[] parameterKeyBuilders = new ParameterKeyBuilder[parameterNames.length];
+        String parameterName;
+        for (int i = 0; i < parameterNames.length; i++) {
+            parameterKeyBuilders[i] = getParameterKeyBuilder(parameterName = Strings.standingInitialLowercase(parameterNames[i])
+                    , parameterDefinitions);
+            provideNames.remove(parameterName);
+        }
+        if (!CollectionUtils.isEmpty(provideNames)) {
+            StringJoiner stringJoiner = new StringJoiner(",");
+            for (String provideName : provideNames) {
+                stringJoiner.add(provideName);
+            }
+            throw new CollapsarException("方法[%s]没有用到的Key命名[%s]", methodFullName, stringJoiner.toString());
+        }
+        return parameterKeyBuilders;
+    }
+
+    private ParameterKeyBuilder getReflectParameterKeyBuilder(String parameterName, int i, String[] names, Class<?> parameterType, boolean isForce) {
+        if (isForce) {
+            if (ArrayUtils.isNotEmpty(names)) {
+                return null;
+            }
+            try {
+                Field declaredField = parameterType.getDeclaredField(parameterName);
+                declaredField.setAccessible(true);
+                return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+            } catch (NoSuchFieldException e) {
+            }
+        } else {
+            if (ArrayUtils.isEmpty(names)) {
+                return null;
+            }
+            for (String name : names) {
+                if (!parameterName.equals(name)) {
+                    continue;
+                }
+                try {
+                    Field declaredField = parameterType.getDeclaredField(parameterName);
+                    declaredField.setAccessible(true);
+                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+                } catch (NoSuchFieldException e) {
+                    throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
+                }
+            }
+        }
+        return null;
     }
 
     private ParameterKeyBuilder getParameterKeyBuilder(String parameterName, ParameterDefinition[] parameterDefinitions) {
@@ -103,27 +156,15 @@ public abstract class MethodParser {
                 return new SimpleParameterKeyBuilder(i, parameterName);
             }
         }
-        String[] names;
+        ParameterKeyBuilder parameterKeyBuilder;
         for (int i = 0; i < parameterDefinitions.length; i++) {
             //然后再从@Keys
             if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 continue;
             }
-            if (ArrayUtils.isEmpty(names = parameterDefinition.getNames())) {
-                continue;
-            }
-            for (String name : names) {
-                if (!parameterName.equals(name)) {
-                    continue;
-                }
-                try {
-                    Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
-                    declaredField.setAccessible(true);
-                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
-                } catch (NoSuchFieldException e) {
-                    throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
-                }
-                break;
+            if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
+                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), false)) != null) {
+                return parameterKeyBuilder;
             }
         }
         for (int i = 0; i < parameterDefinitions.length; i++) {
@@ -131,67 +172,38 @@ public abstract class MethodParser {
             if (!ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 continue;
             }
-            if (ArrayUtils.isEmpty(names = parameterDefinition.getNames())) {
-                continue;
-            }
-            for (String name : names) {
-                if (!parameterName.equals(name)) {
-                    continue;
-                }
-                if (names.length == 1) {
-                    if (parameterDefinition.getType().equals(String.class)
-                            || parameterDefinition.getType().equals(Byte.class)
-                            || parameterDefinition.getType().equals(Short.class)
-                            || parameterDefinition.getType().equals(Integer.class)
-                            || parameterDefinition.getType().equals(Long.class)
-                            || parameterDefinition.getType().equals(Float.class)
-                            || parameterDefinition.getType().equals(Double.class)
-                            || parameterDefinition.getType().equals(Boolean.class)
-                            || parameterDefinition.getType().equals(Character.class)) {
-                        return new SimpleParameterKeyBuilder(i, parameterName);
-                    }
-                }
-                try {
-                    Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
-                    declaredField.setAccessible(true);
-                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
-                } catch (NoSuchFieldException e) {
-                    throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
-                }
-                break;
+            if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
+                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), false)) != null) {
+                return parameterKeyBuilder;
             }
         }
         for (int i = 0; i < parameterDefinitions.length; i++) {
-            if (ParamType.NONE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
-
+            //然后再从@Keys
+            if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+                continue;
+            }
+            if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
+                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), true)) != null) {
+                return parameterKeyBuilder;
             }
         }
-
-//        else {
-//            try {
-//                Field declaredField = ((Class) parameterDefinition.getType()).getDeclaredField(parameterName);
-//                declaredField.setAccessible(true);
-//                return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
-//            } catch (NoSuchFieldException e) {
-//            }
-//        }
-
-    }
-
-    ParameterKeyBuilder[] getParameterKeyBuilders(String[] parameterNames, ParameterDefinition[] parameterDefinitions) {
-        ParameterKeyBuilder[] parameterKeyBuilders = new ParameterKeyBuilder[parameterNames.length];
-        for (int i = 0; i < parameterNames.length; i++) {
-            parameterKeyBuilders[i] = getParameterKeyBuilder(Strings.standingInitialLowercase(parameterNames[i])
-                    , parameterDefinitions);
+        for (int i = 0; i < parameterDefinitions.length; i++) {
+            if (!ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
+                continue;
+            }
+            if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
+                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), true)) != null) {
+                return parameterKeyBuilder;
+            }
         }
-        return parameterKeyBuilders;
+        throw new CollapsarException("请提供方法[%s]需要的参数Key[%s]", methodFullName, parameterName);
     }
 
     MethodParser parseMethodReturnType() {
         return this;
     }
 
-    private MethodDefinition get() {
-        return methodDefinition;
+    private CachesMethod get() {
+        return cachesMethod;
     }
 }

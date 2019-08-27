@@ -1,11 +1,12 @@
 package org.jc.framework.collapsar.proxy;
 
 
+import org.jc.framework.collapsar.definition.CachesBeanDefinition;
+import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.extend.CacheRepository;
 import org.jc.framework.collapsar.support.CachesMethodManager;
 import org.jc.framework.collapsar.support.CachesMethodSupporter;
-import org.jc.framework.collapsar.definition.CachesBeanDefinition;
-import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.CachesSetMethod;
 
 import java.lang.reflect.Method;
 
@@ -39,11 +40,11 @@ public class CachesBeanMethodHandlerImpl implements CachesBeanMethodHandler {
     public Object invoke(Object self, Method thisMethod, Method proceed,
                          Object[] args) throws Throwable {
         final CachesMethodSupporter cachesMethodSupporter = cachesMethodManager.get(thisMethod);
-
         switch (cachesMethodSupporter.getOperate()) {
             case SET:
-                return cacheRepository.set(cachesMethodSupporter.buildCacheKey(args), cachesMethodSupporter.selectValueParameter(args),
-                        cachesMethodSupporter.getExpire());
+                CachesSetMethod cachesSetMethod = cachesMethodSupporter.getCachesMethod();
+                return cacheRepository.set(cachesSetMethod.buildCacheKey(args), cachesSetMethod.selectValueParameter(args),
+                        cachesSetMethod.getExpire());
             case GET:
                 return cacheRepository.get(cachesMethodSupporter.buildCacheKey(args), cachesMethodSupporter.getReturnType());
             case DEL:

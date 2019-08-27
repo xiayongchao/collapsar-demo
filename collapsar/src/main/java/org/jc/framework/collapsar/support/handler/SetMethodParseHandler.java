@@ -4,6 +4,7 @@ import org.jc.framework.collapsar.annotation.SetOperate;
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
+import org.jc.framework.collapsar.support.CachesMethod;
 import org.jc.framework.collapsar.support.parser.MethodParser;
 import org.jc.framework.collapsar.util.Methods;
 
@@ -15,14 +16,14 @@ import java.lang.reflect.Method;
  */
 public class SetMethodParseHandler extends MethodParseHandler {
     @Override
-    public MethodDefinition handleMethod(Method method, Class<?> targetType) {
+    public CachesMethod handleMethod(Method method, MethodDefinition methodDefinition) {
         if (!method.isAnnotationPresent(SetOperate.class)) {
             if (getNextHandler() != null) {
-                return getNextHandler().handleMethod(method, targetType);
+                return getNextHandler().handleMethod(method, methodDefinition);
             }
             throw new CollapsarException("请在方法[%s]上使用注解[@SetOperate/@GetOperate/@DelOperate]",
                     Methods.getMethodFullName(method));
         }
-        return MethodParser.parseMethod(Operate.SET, method, targetType);
+        return MethodParser.parseMethod(Operate.SET, method, methodDefinition);
     }
 }
