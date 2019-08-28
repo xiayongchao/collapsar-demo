@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 public class ReflectParameterKeyBuilder extends ParameterKeyBuilder {
     private final Field field;
 
-    public ReflectParameterKeyBuilder(int index, String name, Field field) {
-        super(index, name);
+    public ReflectParameterKeyBuilder(int index, String name, boolean isBatch, Field field) {
+        super(index, name, isBatch);
         this.field = field;
     }
 

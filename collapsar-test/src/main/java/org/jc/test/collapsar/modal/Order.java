@@ -9,6 +9,15 @@ public class Order {
     private Long userId;
     private Double money;
 
+    public Order() {
+    }
+
+    public Order(Long id, Long userId, Double money) {
+        this.id = id;
+        this.userId = userId;
+        this.money = money;
+    }
+
     public Long getId() {
         return id;
     }

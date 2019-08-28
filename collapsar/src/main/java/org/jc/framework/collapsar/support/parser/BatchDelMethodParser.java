@@ -7,8 +7,11 @@ import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.util.StringUtils;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * @author jc
@@ -21,30 +24,47 @@ public class BatchDelMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodOperate() {
-        if (!method.getName().startsWith(Operate.BATCH_DEL.getPrefix())) {
+        if (!method.getName().startsWith(operate.getPrefix())) {
             throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
-                    Operate.BATCH_DEL.getName(), methodFullName, Operate.BATCH_DEL.getPrefix());
+                    operate.getName(), methodFullName, operate.getPrefix());
         }
-        cachesMethod.setOperate(Operate.BATCH_DEL);
+        cachesMethod.setOperate(operate);
         return this;
     }
 
     @Override
     MethodParser parseMethodParameter() {
-        String nominateKey = method.getName().substring(Operate.BATCH_DEL.getPrefix().length());
+        String nominateKey = method.getName().substring(operate.getPrefix().length());
         if (StringUtils.isEmpty(nominateKey)) {
-            throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", Operate.BATCH_DEL.getName(), methodFullName);
+            throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
         }
         String[] parameterNames = nominateKey.split(METHOD_NAME_SEPARATOR);
         ParameterDefinition[] parameterDefinitions = getParameterDefinitions();
         if (ArrayUtils.isEmpty(parameterDefinitions)) {
-            throw new CollapsarException("[%s]方法[%s]入参不能为空", Operate.BATCH_DEL.getName(), methodFullName);
+            throw new CollapsarException("[%s]方法[%s]入参不能为空", operate.getName(), methodFullName);
         }
+
+        ParameterDefinition parameterDefinition;
+        Type parameterType;
+        ParameterizedTypeImpl parameterizedType = null;
         for (int i = 0; i < parameterDefinitions.length; i++) {
-            if (ParamType.VALUE.equals(parameterDefinitions[i].getParamType())) {
+            if (ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 throw new CollapsarException("[%s]注解的方法[%s]的形参中不能有参数使用注解[@Value]",
-                        Operate.BATCH_DEL.getName(), methodFullName);
+                        operate.getName(), methodFullName);
             }
+            if ((parameterType = parameterDefinition.getType()) instanceof ParameterizedTypeImpl) {
+                parameterizedType = (ParameterizedTypeImpl) parameterType;
+                try {
+                    (parameterizedType.getRawType()).asSubclass(List.class);
+                } catch (ClassCastException e) {
+                    throw new CollapsarException(e, "[%s]注解的方法[%s]不支持的参数类型[%s]",
+                            operate.getName(), methodFullName, parameterType.getTypeName());
+                }
+            }
+        }
+        if (parameterizedType == null) {
+            throw new CollapsarException("[%s]注解的方法[%s]必须提供的参数类型[%s]",
+                    operate.getName(), methodFullName, List.class.getName());
         }
         cachesMethod.setParameterKeyBuilders(getParameterKeyBuilders(parameterNames, parameterDefinitions));
         return this;

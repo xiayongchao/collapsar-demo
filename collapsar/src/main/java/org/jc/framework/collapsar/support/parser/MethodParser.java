@@ -15,6 +15,7 @@ import org.jc.framework.collapsar.util.Methods;
 import org.jc.framework.collapsar.util.Strings;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -122,7 +123,7 @@ public abstract class MethodParser {
         return parameterKeyBuilders;
     }
 
-    private ParameterKeyBuilder getReflectParameterKeyBuilder(String parameterName, int i, String[] names, Class<?> parameterType, boolean isForce) {
+    private ParameterKeyBuilder getReflectParameterKeyBuilder(String parameterName, int i, String[] names, boolean isBatch, Class<?> parameterType, boolean isForce) {
         if (isForce) {
             if (ArrayUtils.isNotEmpty(names)) {
                 return null;
@@ -130,7 +131,7 @@ public abstract class MethodParser {
             try {
                 Field declaredField = parameterType.getDeclaredField(parameterName);
                 declaredField.setAccessible(true);
-                return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+                return new ReflectParameterKeyBuilder(i, parameterName, isBatch, declaredField);
             } catch (NoSuchFieldException e) {
             }
         } else {
@@ -144,13 +145,31 @@ public abstract class MethodParser {
                 try {
                     Field declaredField = parameterType.getDeclaredField(parameterName);
                     declaredField.setAccessible(true);
-                    return new ReflectParameterKeyBuilder(i, parameterName, declaredField);
+                    return new ReflectParameterKeyBuilder(i, parameterName, isBatch, declaredField);
                 } catch (NoSuchFieldException e) {
                     throw new CollapsarException(e, "方法[%s]参数Key[%s]获取失败", methodFullName, parameterName);
                 }
             }
         }
         return null;
+    }
+
+    private Class<?> getParameterRealType(boolean isBatch, Type parameterType) {
+        if (isBatch) {
+            if (parameterType instanceof ParameterizedTypeImpl) {
+                ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) parameterType;
+                return (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            }
+        }
+
+        return (Class<?>) parameterType;
+    }
+
+    private boolean isBatch() {
+        if (Operate.BATCH_SET.equals(operate) || Operate.BATCH_GET.equals(operate) || Operate.BATCH_DEL.equals(operate)) {
+            return true;
+        }
+        return false;
     }
 
     private ParameterKeyBuilder getParameterKeyBuilder(String parameterName, ParameterDefinition[] parameterDefinitions) {
@@ -161,17 +180,19 @@ public abstract class MethodParser {
                 continue;
             }
             if (parameterName.equals(parameterDefinition.getNames()[0])) {
-                return new SimpleParameterKeyBuilder(i, parameterName);
+                return new SimpleParameterKeyBuilder(i, parameterName, isBatch());
             }
         }
         ParameterKeyBuilder parameterKeyBuilder;
+        boolean isBatch;
         for (int i = 0; i < parameterDefinitions.length; i++) {
             //然后再从@Keys
             if (!ParamType.KEYS.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 continue;
             }
             if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
-                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), false)) != null) {
+                    parameterDefinition.getNames(), isBatch = isBatch(),
+                    getParameterRealType(isBatch, parameterDefinition.getType()), false)) != null) {
                 return parameterKeyBuilder;
             }
         }
@@ -181,7 +202,8 @@ public abstract class MethodParser {
                 continue;
             }
             if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
-                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), false)) != null) {
+                    parameterDefinition.getNames(), isBatch = isBatch(),
+                    getParameterRealType(isBatch, parameterDefinition.getType()), false)) != null) {
                 return parameterKeyBuilder;
             }
         }
@@ -191,7 +213,8 @@ public abstract class MethodParser {
                 continue;
             }
             if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
-                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), true)) != null) {
+                    parameterDefinition.getNames(), isBatch = isBatch(),
+                    getParameterRealType(isBatch, parameterDefinition.getType()), true)) != null) {
                 return parameterKeyBuilder;
             }
         }
@@ -200,7 +223,8 @@ public abstract class MethodParser {
                 continue;
             }
             if ((parameterKeyBuilder = getReflectParameterKeyBuilder(parameterName, i,
-                    parameterDefinition.getNames(), (Class<?>) parameterDefinition.getType(), true)) != null) {
+                    parameterDefinition.getNames(), isBatch = isBatch(),
+                    getParameterRealType(isBatch, parameterDefinition.getType()), true)) != null) {
                 return parameterKeyBuilder;
             }
         }

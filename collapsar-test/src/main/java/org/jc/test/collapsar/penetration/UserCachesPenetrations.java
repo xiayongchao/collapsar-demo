@@ -1,10 +1,10 @@
 package org.jc.test.collapsar.penetration;
 
 import org.jc.framework.collapsar.annotation.Key;
-import org.jc.framework.collapsar.annotation.Keys;
 import org.jc.framework.collapsar.annotation.Penetrations;
 import org.jc.framework.collapsar.annotation.Value;
 import org.jc.test.collapsar.caches.UserCaches;
+import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class UserCachesPenetrations implements UserCaches {
         System.out.println("发大水时发大水");
     }
 
-//    @Override
+    //    @Override
     public void setByIdxxx(@Value User user) {
         System.out.println("48122222222");
     }
@@ -44,8 +44,24 @@ public class UserCachesPenetrations implements UserCaches {
     }
 
     @Override
-    public void batchDelById(@Keys("id") List<User> list) {
+    public void batchDelByIdAndUserNameAndMoney(Long id, List<Order> orderList, List<User> userList) {
+        System.out.println("batchDelByIdAndUserNameAndMoney");
+    }
 
+    @Override
+    public void batchDelById(List<Long> idList) {
+        System.out.println("batchDelById");
+    }
+
+    @Override
+    public List<User> batchGetById(List<Long> idList) {
+        System.out.println("batchGetById");
+        return null;
+    }
+
+    @Override
+    public void batchGetByIdAndUserNameAndMoney(Long id, List<Order> orderList, List<User> userList) {
+        System.out.println("batchGetByIdAndUserNameAndMoney");
     }
 
     //    @Override
