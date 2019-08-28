@@ -13,6 +13,10 @@ public abstract class ParameterKeyBuilder {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public final String buildKey(Object[] args) {
         return this.buildKey(args[index]);
     }

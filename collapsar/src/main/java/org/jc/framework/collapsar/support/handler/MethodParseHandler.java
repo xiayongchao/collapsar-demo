@@ -35,6 +35,13 @@ public abstract class MethodParseHandler {
         MethodParseHandler setMethodParseHandler = new SetMethodParseHandler();
         MethodParseHandler getMethodParseHandler = new GetMethodParseHandler();
         MethodParseHandler delMethodParseHandler = new DelMethodParseHandler();
+        MethodParseHandler batchSetMethodParseHandler = new BatchSetMethodParseHandler();
+        MethodParseHandler batchGetMethodParseHandler = new BatchGetMethodParseHandler();
+        MethodParseHandler batchDelMethodParseHandler = new BatchDelMethodParseHandler();
+
+        batchGetMethodParseHandler.setNextHandler(batchDelMethodParseHandler);
+        batchSetMethodParseHandler.setNextHandler(batchGetMethodParseHandler);
+        delMethodParseHandler.setNextHandler(batchSetMethodParseHandler);
         getMethodParseHandler.setNextHandler(delMethodParseHandler);
         setMethodParseHandler.setNextHandler(getMethodParseHandler);
         return setMethodParseHandler;

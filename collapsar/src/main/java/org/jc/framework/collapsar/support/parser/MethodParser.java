@@ -34,23 +34,31 @@ public abstract class MethodParser {
     protected final MethodDefinition methodDefinition;
     protected final String methodFullName;
     protected final CachesMethod cachesMethod;
+    protected final Operate operate;
 
-    MethodParser(Method method, MethodDefinition methodDefinition) {
+    MethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
         this.method = method;
         this.methodDefinition = methodDefinition;
         this.methodFullName = Methods.getMethodFullName(method);
         this.cachesMethod = new CachesMethod(methodDefinition.getProjectName(),
                 methodDefinition.getModuleName(), methodDefinition.getConnector(), this.methodFullName);
+        this.operate = operate;
     }
 
     private static MethodParser getInstance(Operate operate, Method method, MethodDefinition methodDefinition) {
         switch (operate) {
             case SET:
-                return new SetMethodParser(method, methodDefinition);
+                return new SetMethodParser(Operate.SET, method, methodDefinition);
             case GET:
-                return new GetMethodParser(method, methodDefinition);
+                return new GetMethodParser(Operate.GET, method, methodDefinition);
             case DEL:
-                return new DelMethodParser(method, methodDefinition);
+                return new DelMethodParser(Operate.DEL, method, methodDefinition);
+            case BATCH_SET:
+                return new BatchSetMethodParser(Operate.BATCH_SET, method, methodDefinition);
+            case BATCH_GET:
+                return new BatchGetMethodParser(Operate.BATCH_GET, method, methodDefinition);
+            case BATCH_DEL:
+                return new BatchDelMethodParser(Operate.BATCH_DEL, method, methodDefinition);
             default:
                 throw new CollapsarException("未知的@Caches方法[%s]操作类型[%s]", Methods.getMethodFullName(method), operate);
         }

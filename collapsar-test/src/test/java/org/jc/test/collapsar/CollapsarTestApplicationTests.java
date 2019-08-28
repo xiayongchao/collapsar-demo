@@ -17,6 +17,10 @@ public class CollapsarTestApplicationTests {
     @Test
     public void contextLoads() {
         userCaches.setById(1L, new User());
+        User user = userCaches.getById(25L);
+        System.out.println(user.getId());
+        System.out.println(user.getPassword());
+        System.out.println(user.getUserName());
     }
 
 }

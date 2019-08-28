@@ -21,8 +21,8 @@ public class GetMethodParseHandler extends MethodParseHandler {
             if (getNextHandler() != null) {
                 return getNextHandler().handleMethod(method, methodDefinition);
             }
-            throw new CollapsarException("请在方法[%s]上使用注解[@SetOperate/@GetOperate/@DelOperate]",
-                    Methods.getMethodFullName(method));
+            throw new CollapsarException("请在方法[%s]上使用注解[%s]",
+                    Methods.getMethodFullName(method), Operate.ENABLE_METHOD_ANNOTATIONS_STRING);
         }
         return MethodParser.parseMethod(Operate.GET, method, methodDefinition);
     }

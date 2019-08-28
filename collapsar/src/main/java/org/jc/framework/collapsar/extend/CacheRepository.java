@@ -23,7 +23,7 @@ public interface CacheRepository {
      * @param <T>
      * @return
      */
-    <T> boolean set(String key, T object, long expire);
+    <T> void set(String key, T object, long expire);
 
     /**
      * 删除缓存
@@ -32,5 +32,5 @@ public interface CacheRepository {
      * @param <T>
      * @return
      */
-    <T> boolean del(String key);
+    <T> void del(String key);
 }

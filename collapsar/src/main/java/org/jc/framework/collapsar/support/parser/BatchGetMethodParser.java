@@ -14,8 +14,8 @@ import java.lang.reflect.Method;
  * @author jc
  * @date 2019/8/26 21:58
  */
-public class DelMethodParser extends MethodParser {
-    DelMethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
+public class BatchGetMethodParser extends MethodParser {
+    public BatchGetMethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
         super(operate, method, methodDefinition);
     }
 
@@ -52,9 +52,9 @@ public class DelMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodReturnType() {
-        if (!method.getReturnType().equals(Void.TYPE)) {
+        if (!method.getReturnType().equals(methodDefinition.getTargetType())) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s]",
-                    methodFullName, Void.TYPE.getName());
+                    methodFullName, methodDefinition.getTargetType().getName());
         }
         cachesMethod.setReturnType(method.getReturnType());
         return this;

@@ -14,7 +14,8 @@ public interface CachesBeanMethodHandler extends MethodHandler {
      * 注册方法
      *
      * @param method
+     * @param penetrationsBean
      * @param cachesBeanDefinition
      */
-    void registerMethod(Method method, CachesBeanDefinition cachesBeanDefinition);
+    void registerMethod(Method method, Object penetrationsBean, CachesBeanDefinition cachesBeanDefinition);
 }

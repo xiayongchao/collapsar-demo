@@ -3,15 +3,18 @@ package org.jc.framework.collapsar.core;
 
 import javassist.util.proxy.Proxy;
 import javassist.util.proxy.ProxyFactory;
-import org.jc.framework.collapsar.annotation.*;
+import org.jc.framework.collapsar.annotation.Caches;
+import org.jc.framework.collapsar.annotation.EnableCollapsarConfiguration;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.CollapsarConfigurationDefinition;
+import org.jc.framework.collapsar.definition.PenetrationsBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.proxy.CachesBeanMethodHandler;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -21,9 +24,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author xiayc
@@ -31,13 +32,16 @@ import java.util.Set;
  */
 public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
     private DefaultListableBeanFactory beanFactory;
-    private final CollapsarBeanDefinitionScanParser collapsarBeanDefinitionScanParser;
+    private final CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser;
+    private final PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser;
     private final CachesBeanMethodHandler cachesBeanMethodHandler;
 
 
-    CollapsarMergedBeanDefinitionPostProcessor(CollapsarBeanDefinitionScanParser collapsarBeanDefinitionScanParser,
+    CollapsarMergedBeanDefinitionPostProcessor(CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser,
+                                               PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
                                                CachesBeanMethodHandler cachesBeanMethodHandler) {
-        this.collapsarBeanDefinitionScanParser = collapsarBeanDefinitionScanParser;
+        this.cachesBeanDefinitionScanParser = cachesBeanDefinitionScanParser;
+        this.penetrationsBeanDefinitionScanParser = penetrationsBeanDefinitionScanParser;
         this.cachesBeanMethodHandler = cachesBeanMethodHandler;
     }
 
@@ -48,14 +52,17 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
 
     @Override
     public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-        EnableCollapsarConfiguration enableCollapsarConfiguration = AnnotationUtils.findAnnotation(beanType, EnableCollapsarConfiguration.class);
-        if (enableCollapsarConfiguration == null || ArrayUtils.isEmpty(enableCollapsarConfiguration.basePackages())) {
+        EnableCollapsarConfiguration enableCollapsarConfiguration;
+        if ((enableCollapsarConfiguration = AnnotationUtils.findAnnotation(beanType, EnableCollapsarConfiguration.class)) == null
+                || ArrayUtils.isEmpty(enableCollapsarConfiguration.basePackages())) {
             return;
         }
         try {
-            final Set<CachesBeanDefinition> cachesBeanDefinitions = collapsarBeanDefinitionScanParser.
-                    scanParse(new CollapsarConfigurationDefinition(enableCollapsarConfiguration));
-            this.generateInterfaceProxy(cachesBeanDefinitions);
+            CollapsarConfigurationDefinition collapsarConfigurationDefinition = new CollapsarConfigurationDefinition(enableCollapsarConfiguration);
+            final Set<CachesBeanDefinition> cachesBeanDefinitions = cachesBeanDefinitionScanParser.scanParse(collapsarConfigurationDefinition);
+            final Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions = penetrationsBeanDefinitionScanParser.scanParse(collapsarConfigurationDefinition);
+            final Map<String, Object> penetrationsBeanMap = createPenetrationsBeans(penetrationsBeanDefinitions);
+            this.registerCollapsarBeans(cachesBeanDefinitions, penetrationsBeanMap);
         } catch (IOException | NoSuchMethodException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
             throw new CollapsarException(e, "解析CachesBeanDefinition异常");
@@ -63,46 +70,83 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
     }
 
     /**
-     * 生成接口代理
+     * 注册Bean
      *
      * @param cachesBeanDefinitions
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
      */
-    private void generateInterfaceProxy(Set<CachesBeanDefinition> cachesBeanDefinitions) throws
+    private void registerCollapsarBeans(final Set<CachesBeanDefinition> cachesBeanDefinitions,
+                                        final Map<String, Object> penetrationsBeanMap) throws
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         if (CollectionUtils.isEmpty(cachesBeanDefinitions)) {
             return;
         }
-        String beanName, beanClassName;
-        Class beanType;
+        for (CachesBeanDefinition cachesBeanDefinition : cachesBeanDefinitions) {
+            registerCollapsarBean(cachesBeanDefinition, penetrationsBeanMap);
+        }
+    }
+
+    private void registerCollapsarBean(final CachesBeanDefinition cachesBeanDefinition,
+                                       final Map<String, Object> penetrationsBeanMap) throws
+            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         ProxyFactory factory;
         Object object;
-        for (CachesBeanDefinition cachesBeanDefinition : cachesBeanDefinitions) {
-            beanName = cachesBeanDefinition.getBeanName();
-            beanClassName = cachesBeanDefinition.getBeanClassName();
-            beanType = Class.forName(beanClassName, true, this.beanFactory.getBeanClassLoader());
-            if (!beanType.isInterface()) {
-                throw new CollapsarException("请在interface类型上使用注解[%s]", Caches.class.getName());
-            }
-            if (this.beanFactory.containsBean(beanName)) {
-                continue;
-            }
-            List<Method> methods = Arrays.asList(beanType.getDeclaredMethods());
-            factory = new ProxyFactory();
-            factory.setInterfaces(new Class[]{beanType});
-            factory.setFilter((m) -> {
-                return methods.contains(m) && (m.isAnnotationPresent(SetOperate.class)
-                        || m.isAnnotationPresent(GetOperate.class) || m.isAnnotationPresent(DelOperate.class));
-            });
-
-            object = factory.create(new Class[0], new Object[0]);
-            ((Proxy) object).setHandler(cachesBeanMethodHandler);
-
-            methods.forEach(method -> {
-                cachesBeanMethodHandler.registerMethod(method, cachesBeanDefinition);
-            });
-
-            //将生成的对象注册到Spring容器
-            this.beanFactory.registerSingleton(beanName, object);
+        String beanName = cachesBeanDefinition.getBeanName();
+        String beanClassName = cachesBeanDefinition.getBeanClassName();
+        Class beanType = Class.forName(beanClassName, true, this.beanFactory.getBeanClassLoader());
+        if (!beanType.isInterface()) {
+            throw new CollapsarException("请在interface类型上使用注解[%s]", Caches.class.getName());
         }
+        if (this.beanFactory.containsBean(beanName)) {
+            throw new CollapsarException("注册@Caches Bean[%s]失败,已经存在同名Bean[%s]", beanClassName, beanName);
+        }
+        List<Method> methods = Arrays.asList(beanType.getDeclaredMethods());
+        factory = new ProxyFactory();
+        factory.setInterfaces(new Class[]{beanType});
+
+        object = factory.create(new Class[0], new Object[0]);
+        ((Proxy) object).setHandler(cachesBeanMethodHandler);
+
+        for (Method method : methods) {
+            cachesBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), cachesBeanDefinition);
+        }
+
+        //将生成的对象注册到Spring容器
+        this.beanFactory.registerSingleton(beanName, object);
+    }
+
+    private Map<String, Object> createPenetrationsBeans(final Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions) throws ClassNotFoundException {
+        final Map<String, Object> penetrationsBeanMap = new HashMap<>();
+        if (CollectionUtils.isEmpty(penetrationsBeanDefinitions)) {
+            return penetrationsBeanMap;
+        }
+        String[] cachesInterfaceNames;
+        String penetrationsBeanClassName;
+        Class<?> penetrationsBeanType;
+        Object penetrationsBean;
+        Class<?> cachesInterfaceType;
+        for (PenetrationsBeanDefinition penetrationsBeanDefinition : penetrationsBeanDefinitions) {
+            penetrationsBeanClassName = penetrationsBeanDefinition.getBeanClassName();
+            if (ArrayUtils.isEmpty(cachesInterfaceNames = penetrationsBeanDefinition.getInterfaceNames())) {
+                throw new CollapsarException("无法解析Bean[%s],必须实现@Caches注解接口", penetrationsBeanClassName);
+            }
+            penetrationsBeanType = Class.forName(penetrationsBeanClassName, true, this.beanFactory.getBeanClassLoader());
+            penetrationsBean = beanFactory.createBean(penetrationsBeanType, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+            for (String cachesInterfaceName : cachesInterfaceNames) {
+                cachesInterfaceType = Class.forName(cachesInterfaceName, true, this.beanFactory.getBeanClassLoader());
+                if (!cachesInterfaceType.isAnnotationPresent(Caches.class)) {
+                    continue;
+                }
+                if (penetrationsBeanMap.containsKey(cachesInterfaceName)) {
+                    throw new CollapsarException("无法解析Bean[%s],@Caches注解接口[%s]已经存在@Penetrations实例", penetrationsBeanClassName, cachesInterfaceName);
+                }
+                penetrationsBeanMap.put(cachesInterfaceName, penetrationsBean);
+            }
+        }
+        return penetrationsBeanMap;
     }
 }

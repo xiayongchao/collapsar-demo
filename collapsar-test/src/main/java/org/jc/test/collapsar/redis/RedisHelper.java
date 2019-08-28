@@ -27,17 +27,15 @@ public class RedisHelper implements CacheRepository {
     }
 
     @Override
-    public <T> boolean set(String key, T object, long expire) {
+    public <T> void set(String key, T object, long expire) {
         String value = JSON.toJSONString(object);
         cacheMap.put(key, value);
         System.err.println(String.format("set {key:%s,value:%s,expire:%s}", key, value, expire));
-        return true;
     }
 
     @Override
-    public <T> boolean del(String key) {
+    public <T> void del(String key) {
         cacheMap.remove(key);
         System.err.println(String.format("remove {key:%s}", key));
-        return true;
     }
 }

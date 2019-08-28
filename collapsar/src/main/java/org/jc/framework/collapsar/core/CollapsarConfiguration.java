@@ -16,21 +16,29 @@ import org.springframework.context.annotation.Role;
 public class CollapsarConfiguration {
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean(name = "org.jc.framework.collapsar.proxy.CachesBeanMethodHandlerImpl")
+    @Bean(name = "org.jc.framework.collapsar.proxy.CachesBeanMethodHandler")
     public CachesBeanMethodHandler cachesBeanMethodHandler(CacheRepository cacheRepository) {
         return new CachesBeanMethodHandlerImpl(cacheRepository);
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean(name = "org.jc.framework.collapsar.core.CollapsarBeanDefinitionScanParser")
-    public CollapsarBeanDefinitionScanParser collapsarBeanDefinitionScanParser() {
-        return new CollapsarBeanDefinitionScanParser();
+    @Bean(name = "org.jc.framework.collapsar.core.CachesBeanDefinitionScanParser")
+    public CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser() {
+        return new CachesBeanDefinitionScanParser();
+    }
+
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Bean(name = "org.jc.framework.collapsar.core.PenetrationsBeanDefinitionScanParser")
+    public PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser() {
+        return new PenetrationsBeanDefinitionScanParser();
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.core.CollapsarMergedBeanDefinitionPostProcessor")
     public CollapsarMergedBeanDefinitionPostProcessor collapsarMergedBeanDefinitionPostProcessor(
-            CollapsarBeanDefinitionScanParser collapsarBeanDefinitionScanParser, CachesBeanMethodHandler cachesBeanMethodHandler) {
-        return new CollapsarMergedBeanDefinitionPostProcessor(collapsarBeanDefinitionScanParser, cachesBeanMethodHandler);
+            CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser, PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
+            CachesBeanMethodHandler cachesBeanMethodHandler) {
+        return new CollapsarMergedBeanDefinitionPostProcessor(cachesBeanDefinitionScanParser, penetrationsBeanDefinitionScanParser,
+                cachesBeanMethodHandler);
     }
 }

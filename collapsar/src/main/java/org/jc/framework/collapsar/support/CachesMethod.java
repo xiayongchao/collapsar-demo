@@ -3,6 +3,8 @@ package org.jc.framework.collapsar.support;
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
 
+import java.util.StringJoiner;
+
 /**
  * @author jc
  * @date 2019/8/28 0:26
@@ -44,6 +46,7 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
         this.parameterKeyBuilders = parameterKeyBuilders;
     }
 
+    @Override
     public Class<?> getReturnType() {
         return returnType;
     }
@@ -52,6 +55,7 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
         this.returnType = returnType;
     }
 
+    @Override
     public long getExpire() {
         return expire;
     }
@@ -66,5 +70,21 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
 
     public void setValueParameterIndex(int valueParameterIndex) {
         this.valueParameterIndex = valueParameterIndex;
+    }
+
+    @Override
+    public Object selectValueParameter(Object[] args) {
+        return args[valueParameterIndex];
+    }
+
+    @Override
+    public String generateKey(Object[] args) {
+        StringJoiner keyNameJoiner = new StringJoiner("&");
+        StringJoiner keyValueJoiner = new StringJoiner("&");
+        for (ParameterKeyBuilder parameterKeyBuilder : parameterKeyBuilders) {
+            keyNameJoiner.add(parameterKeyBuilder.getName());
+            keyValueJoiner.add(parameterKeyBuilder.buildKey(args));
+        }
+        return String.format(cacheKeyTemplate, keyNameJoiner.toString(), keyValueJoiner.toString());
     }
 }

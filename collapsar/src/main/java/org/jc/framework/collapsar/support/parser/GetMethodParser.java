@@ -1,6 +1,5 @@
 package org.jc.framework.collapsar.support.parser;
 
-import org.jc.framework.collapsar.annotation.GetOperate;
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.MethodDefinition;
@@ -16,18 +15,17 @@ import java.lang.reflect.Method;
  * @date 2019/8/26 21:58
  */
 public class GetMethodParser extends MethodParser {
-    GetMethodParser(Method method, MethodDefinition methodDefinition) {
-        super(method, methodDefinition);
+    GetMethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
+        super(operate, method, methodDefinition);
     }
 
     @Override
     MethodParser parseMethodOperate() {
         if (!method.getName().startsWith(Operate.GET.getPrefix())) {
-            throw new CollapsarException("[@GetOperate]注解方法[%s]请使用['%s']前缀",
-                    methodFullName, Operate.GET.getPrefix());
+            throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
+                    operate.getName(), methodFullName, Operate.GET.getPrefix());
         }
         cachesMethod.setOperate(Operate.GET);
-        GetOperate setOperate = method.getDeclaredAnnotation(GetOperate.class);
         return this;
     }
 
@@ -35,17 +33,17 @@ public class GetMethodParser extends MethodParser {
     MethodParser parseMethodParameter() {
         String nominateKey = method.getName().substring(Operate.GET.getPrefix().length());
         if (StringUtils.isEmpty(nominateKey)) {
-            throw new CollapsarException("非法的[@GetOperate]方法[%s]命名,请提供Key的名称", methodFullName);
+            throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
         }
         String[] parameterNames = nominateKey.split(METHOD_NAME_SEPARATOR);
         ParameterDefinition[] parameterDefinitions = getParameterDefinitions();
         if (ArrayUtils.isEmpty(parameterDefinitions)) {
-            throw new CollapsarException("[@GetOperate]方法[%s]入参不能为空", methodFullName);
+            throw new CollapsarException("[%s]方法[%s]入参不能为空", operate.getName(), methodFullName);
         }
         for (int i = 0; i < parameterDefinitions.length; i++) {
             if (ParamType.VALUE.equals(parameterDefinitions[i].getParamType())) {
-                throw new CollapsarException("[@GetOperate]注解的方法[%s]的形参中不能有参数使用注解[@Value]",
-                        methodFullName);
+                throw new CollapsarException("[%s]注解的方法[%s]的形参中不能有参数使用注解[@Value]",
+                        operate.getName(), methodFullName);
             }
         }
         cachesMethod.setParameterKeyBuilders(getParameterKeyBuilders(parameterNames, parameterDefinitions));

@@ -35,11 +35,11 @@ import java.util.Set;
  * @author xiayc
  * @date 2019/3/25
  */
-public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, EnvironmentAware {
+public class CachesBeanDefinitionScanParser implements ResourceLoaderAware, EnvironmentAware {
     private Environment environment;
     private MetadataReaderFactory metadataReaderFactory;
     private ResourcePatternResolver resourcePatternResolver;
-    private final Set<String> scannedCachesBeans = new HashSet<>();
+    private final Set<String> cachesBeans = new HashSet<>();
 
     /**
      * 扫描并解析SpringJca组件
@@ -81,10 +81,10 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
                 metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
                 annotationMetadata = metadataReader.getAnnotationMetadata();
                 if (cachesFilter.match(metadataReader, this.metadataReaderFactory)) {
-                    if (scannedCachesBeans.contains(annotationMetadata.getClassName())) {
+                    if (cachesBeans.contains(annotationMetadata.getClassName())) {
                         throw new CollapsarException("发现重复注册的@Caches Bean[%s]", annotationMetadata.getClassName());
                     } else if ((cachesBeanDefinition = generateCachesBeanDefinition(projectName, connector, annotationMetadata, annotationName)) != null) {
-                        scannedCachesBeans.add(annotationMetadata.getClassName());
+                        cachesBeans.add(annotationMetadata.getClassName());
                         cachesBeanDefinitions.add(cachesBeanDefinition);
                     }
                 }
@@ -127,15 +127,17 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
         }
         String beanName, moduleName;
         Class targetType;
+        Map<String, Object> map;
+        String[] classNameArr, names;
         for (String annotationType : annotationTypes) {
             if (!annotationType.equals(annotationName)) {
                 continue;
             }
-            Map<String, Object> map = annotationMetadata.getAnnotationAttributes(annotationType, false);
+            map = annotationMetadata.getAnnotationAttributes(annotationType, false);
             beanName = map.get("value").toString();
             if (!StringUtils.hasText(beanName)) {
                 //设置默认值
-                String[] classNameArr = annotationMetadata.getClassName().split("\\.");
+                classNameArr = annotationMetadata.getClassName().split("\\.");
                 beanName = Strings.standingInitialLowercase(classNameArr[classNameArr.length - 1]);
             }
             //---------------
@@ -152,7 +154,7 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
                 //设置默认值，即类名
                 moduleName = targetType.getName();
                 if (StringUtils.hasText(moduleName) && moduleName.contains(".")) {
-                    String[] names = moduleName.split("\\.");
+                    names = moduleName.split("\\.");
                     moduleName = names[names.length - 1];
                 }
             }
@@ -161,7 +163,7 @@ public class CollapsarBeanDefinitionScanParser implements ResourceLoaderAware, E
                     annotationMetadata.getClassName(), moduleName, targetType);
         }
 
-        return null;
+        throw new CollapsarException("无法解析Bean[%s],请加上注解@Caches", annotationMetadata.getClassName());
     }
 
     @Override
