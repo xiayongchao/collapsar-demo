@@ -2,6 +2,7 @@ package org.jc.framework.collapsar.proxy;
 
 
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
+import org.jc.framework.collapsar.definition.MultiCachesBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.extend.CacheRepository;
 import org.jc.framework.collapsar.support.*;
@@ -38,6 +39,11 @@ public class CachesBeanMethodHandlerImpl implements CachesBeanMethodHandler {
     @Override
     public void registerMethod(Method method, Object penetrationsBean, CachesBeanDefinition cachesBeanDefinition) {
         cachesMethodManager.register(method, penetrationsBean, cachesBeanDefinition);
+    }
+
+    @Override
+    public void registerMethod(Method method, Object penetrationsBean, MultiCachesBeanDefinition multiCachesBeanDefinition) {
+        cachesMethodManager.register(method, penetrationsBean, multiCachesBeanDefinition);
     }
 
     @Override

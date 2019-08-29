@@ -6,6 +6,7 @@ import javassist.util.proxy.ProxyFactory;
 import org.jc.framework.collapsar.annotation.Caches;
 import org.jc.framework.collapsar.annotation.CollapsarComponentScan;
 import org.jc.framework.collapsar.annotation.EnableCollapsarConfiguration;
+import org.jc.framework.collapsar.annotation.MultiCaches;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.CollapsarComponentScanDefinition;
 import org.jc.framework.collapsar.definition.MultiCachesBeanDefinition;
@@ -116,14 +117,14 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         ProxyFactory factory;
         Object object;
-        String beanName = cachesBeanDefinition.getBeanName();
-        String beanClassName = cachesBeanDefinition.getBeanClassName();
+        String beanName = multiCachesBeanDefinition.getBeanName();
+        String beanClassName = multiCachesBeanDefinition.getBeanClassName();
         Class beanType = Class.forName(beanClassName, true, this.beanFactory.getBeanClassLoader());
         if (!beanType.isInterface()) {
-            throw new CollapsarException("请在interface类型上使用注解[%s]", Caches.class.getName());
+            throw new CollapsarException("请在interface类型上使用注解[%s]", MultiCaches.class.getName());
         }
         if (this.beanFactory.containsBean(beanName)) {
-            throw new CollapsarException("注册@Caches Bean[%s]失败,已经存在同名Bean[%s]", beanClassName, beanName);
+            throw new CollapsarException("注册@MultiCaches Bean[%s]失败,已经存在同名Bean[%s]", beanClassName, beanName);
         }
         List<Method> methods = Arrays.asList(beanType.getDeclaredMethods());
         factory = new ProxyFactory();
@@ -133,7 +134,7 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         ((Proxy) object).setHandler(cachesBeanMethodHandler);
 
         for (Method method : methods) {
-            cachesBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), cachesBeanDefinition);
+            cachesBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), multiCachesBeanDefinition);
         }
 
         //将生成的对象注册到Spring容器

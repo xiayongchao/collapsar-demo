@@ -2,6 +2,7 @@ package org.jc.framework.collapsar.support;
 
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
 import org.jc.framework.collapsar.definition.MethodDefinition;
+import org.jc.framework.collapsar.definition.MultiCachesBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.support.handler.MethodParseHandler;
 import org.jc.framework.collapsar.util.Methods;
@@ -16,6 +17,22 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CachesMethodManager {
     private final Map<String, CachesMethodSupporter> cachesMethodSupporterMap = new ConcurrentHashMap<>();
+
+    public void register(final Method method, final Object penetrationsBean, final MultiCachesBeanDefinition multiCachesBeanDefinition) {
+        final String methodFullName = method.toString();
+        if (cachesMethodSupporterMap.containsKey(methodFullName)) {
+            throw new CollapsarException("请不要重复注册@Caches Bean方法['%s']", methodFullName);
+        }
+        final CachesMethod cachesMethod = MethodParseHandler.parseHandleMethod(method, new MethodDefinition(cachesBeanDefinition));
+        Method penetrationsMethod;
+        try {
+            penetrationsMethod = penetrationsBean != null ? penetrationsBean.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes()) : null;
+        } catch (NoSuchMethodException e) {
+            throw new CollapsarException(e, "获取@Penetrations Bean[%s]方法[%s]失败", penetrationsBean.getClass().getName(), method.getName());
+        }
+        final CachesMethodSupporter cachesMethodSupporter = new CachesMethodSupporter(cachesMethod, penetrationsBean, penetrationsMethod);
+        cachesMethodSupporterMap.put(methodFullName, cachesMethodSupporter);
+    }
 
     public void register(final Method method, final Object penetrationsBean, final CachesBeanDefinition cachesBeanDefinition) {
         final String methodFullName = method.toString();

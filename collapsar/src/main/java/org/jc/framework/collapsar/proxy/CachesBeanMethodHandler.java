@@ -2,6 +2,7 @@ package org.jc.framework.collapsar.proxy;
 
 import javassist.util.proxy.MethodHandler;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
+import org.jc.framework.collapsar.definition.MultiCachesBeanDefinition;
 
 import java.lang.reflect.Method;
 
@@ -18,4 +19,6 @@ public interface CachesBeanMethodHandler extends MethodHandler {
      * @param cachesBeanDefinition
      */
     void registerMethod(Method method, Object penetrationsBean, CachesBeanDefinition cachesBeanDefinition);
+
+    void registerMethod(Method method, Object penetrationsBean, MultiCachesBeanDefinition multiCachesBeanDefinition);
 }
