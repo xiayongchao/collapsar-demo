@@ -61,6 +61,11 @@ public class CollapsarTestApplicationTests {
     }
 
     @Test
+    public void setById() {
+        userCaches.setById(new User(3L, "ccc", "789"));
+    }
+
+    @Test
     public void batchSetById() {
         List<User> userList = new ArrayList<>();
         userList.add(new User(1L, "xxx", "123"));

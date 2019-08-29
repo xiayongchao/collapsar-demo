@@ -18,11 +18,4 @@ public @interface MultiCaches {
      * @return
      */
     String value() default Strings.EMPTY_STRING;
-
-    /**
-     * 模块名/缓存二级结构名称
-     *
-     * @return
-     */
-    String moduleName() default Strings.NULL_STRING;
 }

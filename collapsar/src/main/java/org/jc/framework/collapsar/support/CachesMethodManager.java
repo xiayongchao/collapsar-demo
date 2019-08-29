@@ -18,7 +18,7 @@ public class CachesMethodManager {
     private final Map<String, CachesMethodSupporter> cachesMethodSupporterMap = new ConcurrentHashMap<>();
 
     public void register(final Method method, final Object penetrationsBean, final CachesBeanDefinition cachesBeanDefinition) {
-        final String methodFullName = String.format("%s#%s", method.getDeclaringClass().getName(), method.getName());
+        final String methodFullName = method.toString();
         if (cachesMethodSupporterMap.containsKey(methodFullName)) {
             throw new CollapsarException("请不要重复注册@Caches Bean方法['%s']", methodFullName);
         }

@@ -58,10 +58,16 @@ public class CachesBeanMethodHandlerImpl implements CachesBeanMethodHandler {
                 return invokeBatchGetMethod(args, cachesMethodSupporter);
             case BATCH_DEL:
                 return invokeBatchDelMethod(args, cachesMethodSupporter);
+            case NONE:
+                return invokeNoneMethod(args, cachesMethodSupporter);
             default:
                 throw new CollapsarException("未知的@Caches Bean方法[%s]操作类型:[%s]",
                         cachesMethodSupporter.getMethodFullName(), cachesMethodSupporter.getOperate().toString());
         }
+    }
+
+    private Object invokeNoneMethod(Object[] args, CachesMethodSupporter cachesMethodSupporter) throws InvocationTargetException, IllegalAccessException {
+        return cachesMethodSupporter.invokePenetrationMethod(args);
     }
 
     private Object invokeBatchSetMethod(Object[] args, CachesMethodSupporter cachesMethodSupporter) throws InvocationTargetException, IllegalAccessException {

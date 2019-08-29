@@ -1,6 +1,7 @@
 package org.jc.test.collapsar.caches;
 
-import org.jc.framework.collapsar.annotation.MultiCaches;
+import org.jc.framework.collapsar.annotation.*;
+import org.jc.test.collapsar.modal.User;
 
 /**
  * @author xiayc
@@ -8,5 +9,7 @@ import org.jc.framework.collapsar.annotation.MultiCaches;
  */
 @MultiCaches
 public interface CommonCaches {
-
+    @SetOperate
+    @TargetModule(targetType = User.class)
+    void setById(@Key("id") Long id, @Value User user);
 }

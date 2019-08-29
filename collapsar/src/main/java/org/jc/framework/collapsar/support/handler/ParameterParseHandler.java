@@ -50,9 +50,9 @@ public abstract class ParameterParseHandler {
         return parameterDefinition;
     }
 
-    private static final ParameterParseHandler parameterParseHandler = init();
+    private static final ParameterParseHandler PARAMETER_PARSE_HANDLER = initParameterParseHandler();
 
-    private static ParameterParseHandler init() {
+    private static ParameterParseHandler initParameterParseHandler() {
         ParameterParseHandler keyParameterParseHandler = new KeyParameterParseHandler();
         ParameterParseHandler keysParameterParseHandler = new KeysParameterParseHandler();
         ParameterParseHandler valueParameterParseHandler = new ValueParameterParseHandler();
@@ -83,6 +83,6 @@ public abstract class ParameterParseHandler {
         if (usefulAnnotations.size() > 1) {
             throw new CollapsarException("方法[%s]的同一形参上只能使用注解[@Key/@Keys/@Value]中的一个", methodFullName);
         }
-        return parameterParseHandler.handleParameter(methodFullName, parameterType, usefulAnnotations.get(0));
+        return PARAMETER_PARSE_HANDLER.handleParameter(methodFullName, parameterType, usefulAnnotations.get(0));
     }
 }

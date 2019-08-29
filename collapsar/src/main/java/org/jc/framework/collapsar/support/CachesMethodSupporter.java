@@ -36,6 +36,6 @@ public class CachesMethodSupporter {
     }
 
     public Operate getOperate() {
-        return cachesMethod.getOperate();
+        return cachesMethod == null ? Operate.NONE : cachesMethod.getOperate();
     }
 }

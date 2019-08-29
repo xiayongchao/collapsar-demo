@@ -11,6 +11,6 @@ public class Methods {
         if (method == null) {
             return null;
         }
-        return String.format("%s#%s", method.getDeclaringClass().getName(), method.getName());
+        return method.toString();
     }
 }

@@ -29,9 +29,9 @@ public abstract class MethodParseHandler {
         this.nextHandler = nextHandler;
     }
 
-    private static final MethodParseHandler methodParseHandler = init();
+    private static final MethodParseHandler METHOD_PARSE_HANDLER = initMethodParseHandler();
 
-    private static MethodParseHandler init() {
+    private static MethodParseHandler initMethodParseHandler() {
         MethodParseHandler setMethodParseHandler = new SetMethodParseHandler();
         MethodParseHandler getMethodParseHandler = new GetMethodParseHandler();
         MethodParseHandler delMethodParseHandler = new DelMethodParseHandler();
@@ -48,6 +48,6 @@ public abstract class MethodParseHandler {
     }
 
     public static CachesMethod parseHandleMethod(Method method, MethodDefinition methodDefinition) {
-        return methodParseHandler.handleMethod(method, methodDefinition);
+        return METHOD_PARSE_HANDLER.handleMethod(method, methodDefinition);
     }
 }

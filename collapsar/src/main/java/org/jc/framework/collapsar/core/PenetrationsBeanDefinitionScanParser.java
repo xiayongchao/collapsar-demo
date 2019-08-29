@@ -2,7 +2,7 @@ package org.jc.framework.collapsar.core;
 
 
 import org.jc.framework.collapsar.annotation.Penetrations;
-import org.jc.framework.collapsar.definition.CollapsarConfigurationDefinition;
+import org.jc.framework.collapsar.definition.CollapsarComponentScanDefinition;
 import org.jc.framework.collapsar.definition.PenetrationsBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.util.ArrayUtils;
@@ -37,21 +37,20 @@ public class PenetrationsBeanDefinitionScanParser implements ResourceLoaderAware
     private Environment environment;
     private MetadataReaderFactory metadataReaderFactory;
     private ResourcePatternResolver resourcePatternResolver;
-    private final Set<String> penetrationsBeans = new HashSet<>();
 
     /**
      * 扫描并解析${@link Penetrations}组件
      *
-     * @param collapsarConfigurationDefinition
+     * @param collapsarComponentScanDefinition
      * @return
      * @throws IOException
      */
-    Set<PenetrationsBeanDefinition> scanParse(final CollapsarConfigurationDefinition collapsarConfigurationDefinition) throws IOException {
+    Set<PenetrationsBeanDefinition> scanParse(final Set<String> collapsarBeans, final CollapsarComponentScanDefinition collapsarComponentScanDefinition) throws IOException {
         String[] basePackages;
         String resourcePattern;
         Set<PenetrationsBeanDefinition> cachesBeanDefinitions = new HashSet<>();
 
-        if (ArrayUtils.isEmpty(basePackages = collapsarConfigurationDefinition.getBasePackages()) || !StringUtils.hasText(resourcePattern = collapsarConfigurationDefinition.getResourcePattern())) {
+        if (ArrayUtils.isEmpty(basePackages = collapsarComponentScanDefinition.getBasePackages()) || !StringUtils.hasText(resourcePattern = collapsarComponentScanDefinition.getResourcePattern())) {
             return cachesBeanDefinitions;
         }
         TypeFilter cachesFilter = new AnnotationTypeFilter(Penetrations.class);
@@ -77,10 +76,10 @@ public class PenetrationsBeanDefinitionScanParser implements ResourceLoaderAware
                 metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
                 annotationMetadata = metadataReader.getAnnotationMetadata();
                 if (cachesFilter.match(metadataReader, this.metadataReaderFactory)) {
-                    if (penetrationsBeans.contains(annotationMetadata.getClassName())) {
+                    if (collapsarBeans.contains(annotationMetadata.getClassName())) {
                         throw new CollapsarException("发现重复注册的@Penetrations Bean[%s]", annotationMetadata.getClassName());
                     } else if ((cachesBeanDefinition = generatePenetrationsBeanDefinition(annotationMetadata, annotationName)) != null) {
-                        penetrationsBeans.add(annotationMetadata.getClassName());
+                        collapsarBeans.add(annotationMetadata.getClassName());
                         cachesBeanDefinitions.add(cachesBeanDefinition);
                     }
                 }
@@ -109,7 +108,7 @@ public class PenetrationsBeanDefinitionScanParser implements ResourceLoaderAware
             }
             return new PenetrationsBeanDefinition(beanName, beanClassName, annotationMetadata.getInterfaceNames());
         }
-        throw new CollapsarException("无法解析Bean[%s],请加上注解@Penetrations", beanClassName);
+        return null;
     }
 
     @Override

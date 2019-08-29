@@ -49,8 +49,12 @@ public class CachesBeanDefinition {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CachesBeanDefinition that = (CachesBeanDefinition) o;
         return Objects.equals(projectName, that.projectName) &&
                 Objects.equals(connector, that.connector) &&

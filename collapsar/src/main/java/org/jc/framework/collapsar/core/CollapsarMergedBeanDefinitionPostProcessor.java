@@ -4,9 +4,11 @@ package org.jc.framework.collapsar.core;
 import javassist.util.proxy.Proxy;
 import javassist.util.proxy.ProxyFactory;
 import org.jc.framework.collapsar.annotation.Caches;
+import org.jc.framework.collapsar.annotation.CollapsarComponentScan;
 import org.jc.framework.collapsar.annotation.EnableCollapsarConfiguration;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
-import org.jc.framework.collapsar.definition.CollapsarConfigurationDefinition;
+import org.jc.framework.collapsar.definition.CollapsarComponentScanDefinition;
+import org.jc.framework.collapsar.definition.MultiCachesBeanDefinition;
 import org.jc.framework.collapsar.definition.PenetrationsBeanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.proxy.CachesBeanMethodHandler;
@@ -33,14 +35,17 @@ import java.util.*;
 public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
     private DefaultListableBeanFactory beanFactory;
     private final CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser;
+    private final MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser;
     private final PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser;
     private final CachesBeanMethodHandler cachesBeanMethodHandler;
-
+    private final Set<String> collapsarBeans = new HashSet<>();
 
     CollapsarMergedBeanDefinitionPostProcessor(CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser,
+                                               MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
                                                PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
                                                CachesBeanMethodHandler cachesBeanMethodHandler) {
         this.cachesBeanDefinitionScanParser = cachesBeanDefinitionScanParser;
+        this.multiCachesBeanDefinitionScanParser = multiCachesBeanDefinitionScanParser;
         this.penetrationsBeanDefinitionScanParser = penetrationsBeanDefinitionScanParser;
         this.cachesBeanMethodHandler = cachesBeanMethodHandler;
     }
@@ -52,20 +57,31 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
 
     @Override
     public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-        EnableCollapsarConfiguration enableCollapsarConfiguration;
-        if ((enableCollapsarConfiguration = AnnotationUtils.findAnnotation(beanType, EnableCollapsarConfiguration.class)) == null
-                || ArrayUtils.isEmpty(enableCollapsarConfiguration.basePackages())) {
+        EnableCollapsarConfiguration enableCollapsarConfiguration = AnnotationUtils.findAnnotation(beanType, EnableCollapsarConfiguration.class);
+        Set<CollapsarComponentScanDefinition> collapsarComponentScanDefinitions = new HashSet<>();
+        if (enableCollapsarConfiguration != null
+                && ArrayUtils.isNotEmpty(enableCollapsarConfiguration.basePackages())) {
+            collapsarComponentScanDefinitions.add(new CollapsarComponentScanDefinition(enableCollapsarConfiguration));
+        }
+        CollapsarComponentScan collapsarComponentScan = AnnotationUtils.findAnnotation(beanType, CollapsarComponentScan.class);
+        if (collapsarComponentScan != null
+                && ArrayUtils.isNotEmpty(collapsarComponentScan.basePackages())) {
+            collapsarComponentScanDefinitions.add(new CollapsarComponentScanDefinition(collapsarComponentScan));
+        }
+        if (CollectionUtils.isEmpty(collapsarComponentScanDefinitions)) {
             return;
         }
-        try {
-            CollapsarConfigurationDefinition collapsarConfigurationDefinition = new CollapsarConfigurationDefinition(enableCollapsarConfiguration);
-            final Set<CachesBeanDefinition> cachesBeanDefinitions = cachesBeanDefinitionScanParser.scanParse(collapsarConfigurationDefinition);
-            final Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions = penetrationsBeanDefinitionScanParser.scanParse(collapsarConfigurationDefinition);
-            final Map<String, Object> penetrationsBeanMap = createPenetrationsBeans(penetrationsBeanDefinitions);
-            this.registerCollapsarBeans(cachesBeanDefinitions, penetrationsBeanMap);
-        } catch (IOException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
-            throw new CollapsarException(e, "解析CachesBeanDefinition异常");
+        for (CollapsarComponentScanDefinition collapsarComponentScanDefinition : collapsarComponentScanDefinitions) {
+            try {
+                final Set<CachesBeanDefinition> cachesBeanDefinitions = cachesBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
+                final Set<MultiCachesBeanDefinition> multiCachesBeanDefinitions = multiCachesBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
+                final Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions = penetrationsBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
+                final Map<String, Object> penetrationsBeanMap = createPenetrationsBeans(penetrationsBeanDefinitions);
+                this.registerCollapsarBeans(cachesBeanDefinitions, multiCachesBeanDefinitions, penetrationsBeanMap);
+            } catch (IOException | NoSuchMethodException | InstantiationException
+                    | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+                throw new CollapsarException(e, "解析CachesBeanDefinition异常");
+            }
         }
     }
 
@@ -80,14 +96,48 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
      * @throws ClassNotFoundException
      */
     private void registerCollapsarBeans(final Set<CachesBeanDefinition> cachesBeanDefinitions,
+                                        final Set<MultiCachesBeanDefinition> multiCachesBeanDefinitions,
                                         final Map<String, Object> penetrationsBeanMap) throws
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        if (CollectionUtils.isEmpty(cachesBeanDefinitions)) {
-            return;
+        if (!CollectionUtils.isEmpty(cachesBeanDefinitions)) {
+            for (CachesBeanDefinition cachesBeanDefinition : cachesBeanDefinitions) {
+                registerCollapsarBean(cachesBeanDefinition, penetrationsBeanMap);
+            }
         }
-        for (CachesBeanDefinition cachesBeanDefinition : cachesBeanDefinitions) {
-            registerCollapsarBean(cachesBeanDefinition, penetrationsBeanMap);
+        if (!CollectionUtils.isEmpty(multiCachesBeanDefinitions)) {
+            for (MultiCachesBeanDefinition multiCachesBeanDefinition : multiCachesBeanDefinitions) {
+                registerCollapsarBean(multiCachesBeanDefinition, penetrationsBeanMap);
+            }
         }
+    }
+
+    private void registerCollapsarBean(final MultiCachesBeanDefinition multiCachesBeanDefinition,
+                                       final Map<String, Object> penetrationsBeanMap) throws
+            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        ProxyFactory factory;
+        Object object;
+        String beanName = cachesBeanDefinition.getBeanName();
+        String beanClassName = cachesBeanDefinition.getBeanClassName();
+        Class beanType = Class.forName(beanClassName, true, this.beanFactory.getBeanClassLoader());
+        if (!beanType.isInterface()) {
+            throw new CollapsarException("请在interface类型上使用注解[%s]", Caches.class.getName());
+        }
+        if (this.beanFactory.containsBean(beanName)) {
+            throw new CollapsarException("注册@Caches Bean[%s]失败,已经存在同名Bean[%s]", beanClassName, beanName);
+        }
+        List<Method> methods = Arrays.asList(beanType.getDeclaredMethods());
+        factory = new ProxyFactory();
+        factory.setInterfaces(new Class[]{beanType});
+
+        object = factory.create(new Class[0], new Object[0]);
+        ((Proxy) object).setHandler(cachesBeanMethodHandler);
+
+        for (Method method : methods) {
+            cachesBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), cachesBeanDefinition);
+        }
+
+        //将生成的对象注册到Spring容器
+        this.beanFactory.registerSingleton(beanName, object);
     }
 
     private void registerCollapsarBean(final CachesBeanDefinition cachesBeanDefinition,

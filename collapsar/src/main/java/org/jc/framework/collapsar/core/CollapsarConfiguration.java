@@ -28,6 +28,12 @@ public class CollapsarConfiguration {
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Bean(name = "org.jc.framework.collapsar.core.MultiCachesBeanDefinitionScanParser")
+    public MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser() {
+        return new MultiCachesBeanDefinitionScanParser();
+    }
+
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.core.PenetrationsBeanDefinitionScanParser")
     public PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser() {
         return new PenetrationsBeanDefinitionScanParser();
@@ -36,9 +42,10 @@ public class CollapsarConfiguration {
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.core.CollapsarMergedBeanDefinitionPostProcessor")
     public CollapsarMergedBeanDefinitionPostProcessor collapsarMergedBeanDefinitionPostProcessor(
-            CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser, PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
+            CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser, MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
+            PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
             CachesBeanMethodHandler cachesBeanMethodHandler) {
-        return new CollapsarMergedBeanDefinitionPostProcessor(cachesBeanDefinitionScanParser, penetrationsBeanDefinitionScanParser,
-                cachesBeanMethodHandler);
+        return new CollapsarMergedBeanDefinitionPostProcessor(cachesBeanDefinitionScanParser, multiCachesBeanDefinitionScanParser,
+                penetrationsBeanDefinitionScanParser, cachesBeanMethodHandler);
     }
 }
