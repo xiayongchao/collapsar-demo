@@ -3,29 +3,12 @@ package org.jc.framework.collapsar.core;
 
 import org.jc.framework.collapsar.annotation.Caches;
 import org.jc.framework.collapsar.definition.CachesBeanDefinition;
-import org.jc.framework.collapsar.definition.CollapsarComponentScanDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
-import org.jc.framework.collapsar.util.ArrayUtils;
 import org.jc.framework.collapsar.util.Strings;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.core.type.filter.TypeFilter;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,62 +18,9 @@ import java.util.Set;
  * @author xiayc
  * @date 2019/3/25
  */
-public class CachesBeanDefinitionScanParser implements ResourceLoaderAware, EnvironmentAware {
-    private Environment environment;
-    private MetadataReaderFactory metadataReaderFactory;
-    private ResourcePatternResolver resourcePatternResolver;
-
-    /**
-     * 扫描并解析${@link Caches}组件
-     *
-     * @param collapsarBeans
-     * @param collapsarComponentScanDefinition
-     * @return
-     * @throws IOException
-     */
-    Set<CachesBeanDefinition> scanParse(final Set<String> collapsarBeans, final CollapsarComponentScanDefinition collapsarComponentScanDefinition) throws IOException {
-        String[] basePackages;
-        String resourcePattern;
-        Set<CachesBeanDefinition> cachesBeanDefinitions = new HashSet<>();
-
-        if (ArrayUtils.isEmpty(basePackages = collapsarComponentScanDefinition.getBasePackages()) || !StringUtils.hasText(resourcePattern = collapsarComponentScanDefinition.getResourcePattern())) {
-            return cachesBeanDefinitions;
-        }
-        TypeFilter cachesFilter = new AnnotationTypeFilter(Caches.class);
-        MetadataReader metadataReader;
-        AnnotationMetadata annotationMetadata;
-        String classPattern = "classpath*:%s/%s";
-        Resource[] resources;
-        CachesBeanDefinition cachesBeanDefinition;
-        String annotationName = Caches.class.getName();
-        String projectName = collapsarComponentScanDefinition.getProjectName();
-        String connector = collapsarComponentScanDefinition.getConnector();
-        for (String basePackage : basePackages) {
-            if (!StringUtils.hasText(basePackage)) {
-                continue;
-            }
-            resources = this.resourcePatternResolver.getResources(String.format(classPattern, ClassUtils.convertClassNameToResourcePath(
-                    this.environment.resolveRequiredPlaceholders(basePackage)), resourcePattern));
-            if (ArrayUtils.isEmpty(resources)) {
-                continue;
-            }
-            for (Resource resource : resources) {
-                if (!resource.isReadable()) {
-                    continue;
-                }
-                metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
-                annotationMetadata = metadataReader.getAnnotationMetadata();
-                if (cachesFilter.match(metadataReader, this.metadataReaderFactory)) {
-                    if (collapsarBeans.contains(annotationMetadata.getClassName())) {
-                        throw new CollapsarException("发现重复注册的@Caches Bean[%s]", annotationMetadata.getClassName());
-                    } else if ((cachesBeanDefinition = generateCachesBeanDefinition(projectName, connector, annotationMetadata, annotationName)) != null) {
-                        collapsarBeans.add(annotationMetadata.getClassName());
-                        cachesBeanDefinitions.add(cachesBeanDefinition);
-                    }
-                }
-            }
-        }
-        return cachesBeanDefinitions;
+public class CachesBeanDefinitionScanParser extends CollapsarBeanDefinitionScanParser<CachesBeanDefinition> {
+    public CachesBeanDefinitionScanParser() {
+        super(Caches.class);
     }
 
     private boolean isSupportTargetType(Class targetType) {
@@ -119,8 +49,8 @@ public class CachesBeanDefinitionScanParser implements ResourceLoaderAware, Envi
         return true;
     }
 
-    private CachesBeanDefinition generateCachesBeanDefinition(final String projectName,
-                                                              final String connector, final AnnotationMetadata annotationMetadata, final String annotationName) {
+    protected CachesBeanDefinition generateBeanDefinition(final String projectName,
+                                                          final String connector, final AnnotationMetadata annotationMetadata, final String annotationName) {
         Set<String> annotationTypes = annotationMetadata.getAnnotationTypes();
         if (annotationTypes.isEmpty()) {
             return null;
@@ -155,25 +85,13 @@ public class CachesBeanDefinitionScanParser implements ResourceLoaderAware, Envi
                 moduleName = targetType.getName();
                 if (StringUtils.hasText(moduleName) && moduleName.contains(".")) {
                     names = moduleName.split("\\.");
-                    moduleName = names[names.length - 1];
+                    moduleName = Strings.standingInitialLowercase(names[names.length - 1]);
                 }
             }
 
             return new CachesBeanDefinition(projectName, connector, beanName,
                     annotationMetadata.getClassName(), moduleName, targetType);
         }
-
         return null;
-    }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-        this.metadataReaderFactory = new CachingMetadataReaderFactory(this.resourcePatternResolver);
     }
 }

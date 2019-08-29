@@ -1,6 +1,6 @@
 package org.jc.framework.collapsar.support;
 
-public interface CachesSetMethod {
+public interface CachesSetMethod extends PenetrationMethodInvoker {
 
     String generateKey(Object[] args);
 

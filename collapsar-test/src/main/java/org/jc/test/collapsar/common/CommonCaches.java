@@ -1,4 +1,4 @@
-package org.jc.test.collapsar.caches;
+package org.jc.test.collapsar.common;
 
 import org.jc.framework.collapsar.annotation.*;
 import org.jc.test.collapsar.modal.Order;

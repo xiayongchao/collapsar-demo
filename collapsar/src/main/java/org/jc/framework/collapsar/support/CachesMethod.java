@@ -4,6 +4,8 @@ import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.StringJoiner;
  * @author jc
  * @date 2019/8/28 0:26
  */
-public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDelMethod,
+public class CachesMethod implements CachesNoneMethod, CachesSetMethod, CachesGetMethod, CachesDelMethod,
         CachesBatchDelMethod, CachesBatchGetMethod, CachesBatchSetMethod {
     private String projectName;
     private String moduleName;
@@ -28,6 +30,8 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
     private long expire = 0;
     private int valueParameterIndex = -1;
     private Class<? extends List> implType;
+    private Object penetrationsBean;
+    private Method penetrationsMethod;
 
     public CachesMethod(String projectName, String moduleName, String connector, String methodFullName) {
         this.projectName = projectName;
@@ -167,5 +171,20 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
 
     public void setImplType(Class<? extends List> implType) {
         this.implType = implType;
+    }
+
+    public void setPenetrationsBean(Object penetrationsBean) {
+        this.penetrationsBean = penetrationsBean;
+    }
+
+    public void setPenetrationsMethod(Method penetrationsMethod) {
+        this.penetrationsMethod = penetrationsMethod;
+    }
+
+    public Object invokePenetrationMethod(Object[] args) throws InvocationTargetException, IllegalAccessException {
+        if (penetrationsBean == null || penetrationsMethod == null) {
+            return null;
+        }
+        return penetrationsMethod.invoke(penetrationsBean, args);
     }
 }

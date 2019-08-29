@@ -5,6 +5,8 @@ import org.jc.framework.collapsar.util.Strings;
 import java.lang.annotation.*;
 
 /**
+ * 多缓存组件注解
+ *
  * @author xiayc
  * @date 2019/8/23
  */

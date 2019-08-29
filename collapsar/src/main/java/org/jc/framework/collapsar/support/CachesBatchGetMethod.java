@@ -3,7 +3,7 @@ package org.jc.framework.collapsar.support;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public interface CachesBatchGetMethod {
+public interface CachesBatchGetMethod extends PenetrationMethodInvoker {
     String generateKey(Object[] args);
 
     Object[] filterArgs(int i, Object[] args);
@@ -15,4 +15,6 @@ public interface CachesBatchGetMethod {
     Class<? extends List> getImplType();
 
     Type getReturnType();
+
+    String getMethodFullName();
 }

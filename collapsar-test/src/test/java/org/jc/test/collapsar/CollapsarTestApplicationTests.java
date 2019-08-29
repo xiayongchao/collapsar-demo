@@ -1,6 +1,6 @@
 package org.jc.test.collapsar;
 
-import org.jc.test.collapsar.caches.CommonCaches;
+import org.jc.test.collapsar.common.CommonCaches;
 import org.jc.test.collapsar.caches.UserCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
