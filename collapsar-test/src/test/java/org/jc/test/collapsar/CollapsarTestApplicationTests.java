@@ -1,5 +1,6 @@
 package org.jc.test.collapsar;
 
+import org.jc.test.collapsar.caches.CommonCaches;
 import org.jc.test.collapsar.caches.UserCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
@@ -18,6 +19,8 @@ import java.util.List;
 public class CollapsarTestApplicationTests {
     @Autowired
     private UserCaches userCaches;
+    @Autowired
+    private CommonCaches commonCaches;
 
     @Test
     public void contextLoads() {
@@ -61,16 +64,59 @@ public class CollapsarTestApplicationTests {
     }
 
     @Test
-    public void setById() {
-        userCaches.setById(new User(3L, "ccc", "789"));
-    }
-
-    @Test
     public void batchSetById() {
         List<User> userList = new ArrayList<>();
         userList.add(new User(1L, "xxx", "123"));
         userList.add(new User(2L, "yyy", "456"));
         userList.add(new User(3L, "ccc", "789"));
         userCaches.batchSetById(userList);
+    }
+
+    @Test
+    public void setById() {
+        userCaches.setById(new User(3L, "ccc", "789"));
+    }
+
+    @Test
+    public void batchSetUserById() {
+        List<User> userList = new ArrayList<>();
+        userList.add(new User(1L, "xxx", "123"));
+        userList.add(new User(2L, "yyy", "456"));
+        userList.add(new User(3L, "ccc", "789"));
+        commonCaches.batchSetUserById(userList);
+    }
+
+    @Test
+    public void batchGetUserById() {
+        List<Long> idList = new ArrayList<>();
+        idList.add(1L);
+        idList.add(2L);
+        idList.add(3L);
+        System.out.println(Gsons.getJson(commonCaches.batchGetUserById(idList)));
+    }
+
+    @Test
+    public void batchDelUserById() {
+        List<Long> idList = new ArrayList<>();
+        idList.add(1L);
+        idList.add(2L);
+        idList.add(3L);
+        commonCaches.batchDelUserById(idList);
+    }
+
+
+    @Test
+    public void delUserById() {
+        commonCaches.delUserById(2L);
+    }
+
+    @Test
+    public void setUserById() {
+        commonCaches.setXycById(1L, new User());
+    }
+
+    @Test
+    public void getUserById() {
+        commonCaches.getUserById(new User());
     }
 }

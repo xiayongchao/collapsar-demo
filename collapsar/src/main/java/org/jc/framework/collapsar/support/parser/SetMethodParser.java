@@ -24,11 +24,7 @@ public class SetMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodOperate() {
-        if (!method.getName().startsWith(operate.getPrefix())) {
-            throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
-                    operate.getName(), methodFullName, operate.getPrefix());
-        }
-        cachesMethod.setOperate(operate);
+        super.parseMethodOperate();
         SetOperate setOperate = method.getDeclaredAnnotation(SetOperate.class);
         cachesMethod.setExpire(ExpireCalculator.calc(setOperate.expire(), setOperate.unit()));
         return this;
@@ -36,7 +32,7 @@ public class SetMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodParameter() {
-        String nominateKey = method.getName().substring(operate.getPrefix().length());
+        String nominateKey = operate.removePrefix(method.getName(), cachesMethod.getModuleName(), methodDefinition.isMulti());
         if (StringUtils.isEmpty(nominateKey)) {
             throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
         }
@@ -45,6 +41,7 @@ public class SetMethodParser extends MethodParser {
         if (ArrayUtils.isEmpty(parameterDefinitions)) {
             throw new CollapsarException("[%s]方法[%s]入参不能为空", operate.getName(), methodFullName);
         }
+
         Type valueParameterType = null;
         for (int i = 0; i < parameterDefinitions.length; i++) {
             if (!ParamType.VALUE.equals(parameterDefinitions[i].getParamType())) {
@@ -61,7 +58,7 @@ public class SetMethodParser extends MethodParser {
             throw new CollapsarException("[%s]注解的方法[%s]必须提供一个@Value注解的参数",
                     operate.getName(), methodFullName);
         }
-        if (!valueParameterType.equals(methodDefinition.getTargetType())) {
+        if (!methodDefinition.isMulti() && !valueParameterType.equals(methodDefinition.getTargetType())) {
             throw new CollapsarException("方法[%s]的@Value形参类型请使用[%s]",
                     methodFullName, methodDefinition.getTargetType().getName());
         }

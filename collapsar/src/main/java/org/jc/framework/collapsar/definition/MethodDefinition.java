@@ -9,17 +9,24 @@ public class MethodDefinition {
     private final String moduleName;
     private final String connector;
     private final Class<?> targetType;
+    private final boolean isMulti;
 
     public MethodDefinition(CachesBeanDefinition cachesBeanDefinition) {
         this(cachesBeanDefinition.getProjectName(), cachesBeanDefinition.getModuleName(),
-                cachesBeanDefinition.getConnector(), cachesBeanDefinition.getTargetType());
+                cachesBeanDefinition.getConnector(), cachesBeanDefinition.getTargetType(), false);
     }
 
-    public MethodDefinition(String projectName, String moduleName, String connector, Class<?> targetType) {
+    public MethodDefinition(MultiCachesBeanDefinition multiCachesBeanDefinition) {
+        this(multiCachesBeanDefinition.getProjectName(), null,
+                multiCachesBeanDefinition.getConnector(), null, true);
+    }
+
+    public MethodDefinition(String projectName, String moduleName, String connector, Class<?> targetType, boolean isMulti) {
         this.projectName = projectName;
         this.moduleName = moduleName;
         this.connector = connector;
         this.targetType = targetType;
+        this.isMulti = isMulti;
     }
 
     public String getProjectName() {
@@ -36,5 +43,9 @@ public class MethodDefinition {
 
     public Class<?> getTargetType() {
         return targetType;
+    }
+
+    public boolean isMulti() {
+        return isMulti;
     }
 }

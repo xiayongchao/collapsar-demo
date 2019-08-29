@@ -24,18 +24,8 @@ public class BatchGetMethodParser extends MethodParser {
     }
 
     @Override
-    MethodParser parseMethodOperate() {
-        if (!method.getName().startsWith(operate.getPrefix())) {
-            throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
-                    operate.getName(), methodFullName, operate.getPrefix());
-        }
-        cachesMethod.setOperate(operate);
-        return this;
-    }
-
-    @Override
     MethodParser parseMethodParameter() {
-        String nominateKey = method.getName().substring(operate.getPrefix().length());
+        String nominateKey = operate.removePrefix(method.getName(), cachesMethod.getModuleName(), methodDefinition.isMulti());
         if (StringUtils.isEmpty(nominateKey)) {
             throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
         }
@@ -44,11 +34,28 @@ public class BatchGetMethodParser extends MethodParser {
         if (ArrayUtils.isEmpty(parameterDefinitions)) {
             throw new CollapsarException("[%s]方法[%s]入参不能为空", operate.getName(), methodFullName);
         }
+
+        ParameterDefinition parameterDefinition;
+        Type parameterType;
+        ParameterizedTypeImpl parameterizedType = null;
         for (int i = 0; i < parameterDefinitions.length; i++) {
-            if (ParamType.VALUE.equals(parameterDefinitions[i].getParamType())) {
+            if (ParamType.VALUE.equals((parameterDefinition = parameterDefinitions[i]).getParamType())) {
                 throw new CollapsarException("[%s]注解的方法[%s]的形参中不能有参数使用注解[@Value]",
                         operate.getName(), methodFullName);
             }
+            if ((parameterType = parameterDefinition.getType()) instanceof ParameterizedTypeImpl) {
+                parameterizedType = (ParameterizedTypeImpl) parameterType;
+                try {
+                    (parameterizedType.getRawType()).asSubclass(List.class);
+                } catch (ClassCastException e) {
+                    throw new CollapsarException(e, "[%s]注解的方法[%s]不支持的参数类型[%s]",
+                            operate.getName(), methodFullName, parameterType.getTypeName());
+                }
+            }
+        }
+        if (parameterizedType == null) {
+            throw new CollapsarException("[%s]注解的方法[%s]必须提供的参数类型[%s]",
+                    operate.getName(), methodFullName, List.class.getName());
         }
         cachesMethod.setParameterKeyBuilders(getParameterKeyBuilders(parameterNames, parameterDefinitions));
         return this;
@@ -68,7 +75,7 @@ public class BatchGetMethodParser extends MethodParser {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s<%s>]或其实现类",
                     methodFullName, List.class.getName(), methodDefinition.getTargetType().getName());
         }
-        if (!parameterizedType.getActualTypeArguments()[0].equals(methodDefinition.getTargetType())) {
+        if (!methodDefinition.isMulti() && !parameterizedType.getActualTypeArguments()[0].equals(methodDefinition.getTargetType())) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s<%s>]或其实现类",
                     methodFullName, List.class.getName(), methodDefinition.getTargetType().getName());
         }

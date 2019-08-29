@@ -18,12 +18,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CachesMethodManager {
     private final Map<String, CachesMethodSupporter> cachesMethodSupporterMap = new ConcurrentHashMap<>();
 
-    public void register(final Method method, final Object penetrationsBean, final MultiCachesBeanDefinition multiCachesBeanDefinition) {
+    private void register(final Method method, final Object penetrationsBean, final MethodDefinition methodDefinition) {
         final String methodFullName = method.toString();
         if (cachesMethodSupporterMap.containsKey(methodFullName)) {
-            throw new CollapsarException("请不要重复注册@Caches Bean方法['%s']", methodFullName);
+            throw new CollapsarException("请不要重复注册@MultiCaches Bean方法['%s']", methodFullName);
         }
-        final CachesMethod cachesMethod = MethodParseHandler.parseHandleMethod(method, new MethodDefinition(cachesBeanDefinition));
+        final CachesMethod cachesMethod = MethodParseHandler.parseHandleMethod(method, methodDefinition);
         Method penetrationsMethod;
         try {
             penetrationsMethod = penetrationsBean != null ? penetrationsBean.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes()) : null;
@@ -32,22 +32,15 @@ public class CachesMethodManager {
         }
         final CachesMethodSupporter cachesMethodSupporter = new CachesMethodSupporter(cachesMethod, penetrationsBean, penetrationsMethod);
         cachesMethodSupporterMap.put(methodFullName, cachesMethodSupporter);
+
+    }
+
+    public void register(final Method method, final Object penetrationsBean, final MultiCachesBeanDefinition multiCachesBeanDefinition) {
+        register(method, penetrationsBean, new MethodDefinition(multiCachesBeanDefinition));
     }
 
     public void register(final Method method, final Object penetrationsBean, final CachesBeanDefinition cachesBeanDefinition) {
-        final String methodFullName = method.toString();
-        if (cachesMethodSupporterMap.containsKey(methodFullName)) {
-            throw new CollapsarException("请不要重复注册@Caches Bean方法['%s']", methodFullName);
-        }
-        final CachesMethod cachesMethod = MethodParseHandler.parseHandleMethod(method, new MethodDefinition(cachesBeanDefinition));
-        Method penetrationsMethod;
-        try {
-            penetrationsMethod = penetrationsBean != null ? penetrationsBean.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes()) : null;
-        } catch (NoSuchMethodException e) {
-            throw new CollapsarException(e, "获取@Penetrations Bean[%s]方法[%s]失败", penetrationsBean.getClass().getName(), method.getName());
-        }
-        final CachesMethodSupporter cachesMethodSupporter = new CachesMethodSupporter(cachesMethod, penetrationsBean, penetrationsMethod);
-        cachesMethodSupporterMap.put(methodFullName, cachesMethodSupporter);
+        register(method, penetrationsBean, new MethodDefinition(cachesBeanDefinition));
     }
 
     public CachesMethodSupporter get(Method method) {

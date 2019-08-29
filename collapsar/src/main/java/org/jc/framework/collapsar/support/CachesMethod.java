@@ -15,8 +15,10 @@ import java.util.StringJoiner;
  */
 public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDelMethod,
         CachesBatchDelMethod, CachesBatchGetMethod, CachesBatchSetMethod {
-    private final String cacheKeyTemplate;
-    private final String methodFullName;
+    private String projectName;
+    private String moduleName;
+    private String connector;
+    private String methodFullName;
     private Operate operate;
     private ParameterKeyBuilder[] parameterKeyBuilders;
     private Type returnType;
@@ -28,7 +30,9 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
     private Class<? extends List> implType;
 
     public CachesMethod(String projectName, String moduleName, String connector, String methodFullName) {
-        this.cacheKeyTemplate = projectName + connector + moduleName + connector + "%s_%s";
+        this.projectName = projectName;
+        this.moduleName = moduleName;
+        this.connector = connector;
         this.methodFullName = methodFullName;
     }
 
@@ -42,10 +46,6 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
 
     public void setOperate(Operate operate) {
         this.operate = operate;
-    }
-
-    public ParameterKeyBuilder[] getParameterKeyBuilders() {
-        return parameterKeyBuilders;
     }
 
     public void setParameterKeyBuilders(ParameterKeyBuilder[] parameterKeyBuilders) {
@@ -70,12 +70,16 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
         this.expire = expire;
     }
 
-    public int getValueParameterIndex() {
-        return valueParameterIndex;
-    }
-
     public void setValueParameterIndex(int valueParameterIndex) {
         this.valueParameterIndex = valueParameterIndex;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     @Override
@@ -97,7 +101,8 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
             keyNameJoiner.add(parameterKeyBuilder.getName());
             keyValueJoiner.add(parameterKeyBuilder.buildKey(args));
         }
-        return String.format(cacheKeyTemplate, keyNameJoiner.toString(), keyValueJoiner.toString());
+        return String.format("%s%s%s%s%s_%s", projectName, connector, moduleName,
+                connector, keyNameJoiner.toString(), keyValueJoiner.toString());
     }
 
     @Override

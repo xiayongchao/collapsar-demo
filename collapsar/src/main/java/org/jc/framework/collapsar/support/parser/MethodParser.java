@@ -71,6 +71,16 @@ public abstract class MethodParser {
     }
 
     MethodParser parseMethodOperate() {
+        boolean multi;
+        String name;
+        if (!operate.validatePrefix(name = method.getName(), multi = methodDefinition.isMulti())) {
+            throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
+                    operate.getName(), methodFullName, multi ? operate.getMultiPrefix() : operate.getPrefix());
+        }
+        if (multi) {
+            cachesMethod.setModuleName(operate.getModuleName(name));
+        }
+        cachesMethod.setOperate(operate);
         return this;
     }
 

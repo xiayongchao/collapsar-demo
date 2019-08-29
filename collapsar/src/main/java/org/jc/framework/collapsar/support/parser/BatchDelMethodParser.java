@@ -23,18 +23,8 @@ public class BatchDelMethodParser extends MethodParser {
     }
 
     @Override
-    MethodParser parseMethodOperate() {
-        if (!method.getName().startsWith(operate.getPrefix())) {
-            throw new CollapsarException("[%s]注解方法[%s]请使用['%s']前缀",
-                    operate.getName(), methodFullName, operate.getPrefix());
-        }
-        cachesMethod.setOperate(operate);
-        return this;
-    }
-
-    @Override
     MethodParser parseMethodParameter() {
-        String nominateKey = method.getName().substring(operate.getPrefix().length());
+        String nominateKey = operate.removePrefix(method.getName(), cachesMethod.getModuleName(), methodDefinition.isMulti());
         if (StringUtils.isEmpty(nominateKey)) {
             throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
         }
