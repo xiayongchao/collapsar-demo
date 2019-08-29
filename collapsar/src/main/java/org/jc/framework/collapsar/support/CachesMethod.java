@@ -4,6 +4,8 @@ import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
 
+import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -11,17 +13,19 @@ import java.util.StringJoiner;
  * @author jc
  * @date 2019/8/28 0:26
  */
-public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDelMethod, CachesBatchDelMethod {
+public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDelMethod,
+        CachesBatchDelMethod, CachesBatchGetMethod, CachesBatchSetMethod {
     private final String cacheKeyTemplate;
     private final String methodFullName;
     private Operate operate;
     private ParameterKeyBuilder[] parameterKeyBuilders;
-    private Class<?> returnType;
+    private Type returnType;
     /**
      * 缓存过期时间
      */
     private long expire = 0;
     private int valueParameterIndex = -1;
+    private Class<? extends List> implType;
 
     public CachesMethod(String projectName, String moduleName, String connector, String methodFullName) {
         this.cacheKeyTemplate = projectName + connector + moduleName + connector + "%s_%s";
@@ -49,11 +53,11 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public Type getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(Class<?> returnType) {
+    public void setReturnType(Type returnType) {
         this.returnType = returnType;
     }
 
@@ -77,6 +81,12 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
     @Override
     public Object selectValueParameter(Object[] args) {
         return args[valueParameterIndex];
+    }
+
+    @Override
+    public Object selectValueParameter(int i, Object[] args) {
+        List arg = (List) args[valueParameterIndex];
+        return arg == null ? null : arg.get(i);
     }
 
     @Override
@@ -105,6 +115,30 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
     }
 
     @Override
+    public Object[] filterArgs(List<Integer> indexList, Object[] args) {
+        Object[] filterArgs = new Object[args.length];
+        System.arraycopy(args, 0, filterArgs, 0, args.length);
+        Object arg;
+        Iterator iterator;
+        int i;
+        for (ParameterKeyBuilder parameterKeyBuilder : parameterKeyBuilders) {
+            arg = filterArgs[parameterKeyBuilder.getIndex()];
+            if (parameterKeyBuilder.isBatch()) {
+                iterator = arg == null ? null : ((List) arg).iterator();
+                i = 0;
+                while (arg != null && iterator.hasNext()) {
+                    iterator.next();
+                    if (indexList != null && !indexList.contains(i)) {
+                        iterator.remove();
+                    }
+                    i++;
+                }
+            }
+        }
+        return filterArgs;
+    }
+
+    @Override
     public int calcListSize(Object[] args) {
         Object arg;
         Integer size = null;
@@ -119,5 +153,14 @@ public class CachesMethod implements CachesSetMethod, CachesGetMethod, CachesDel
             }
         }
         return size == null ? 0 : size;
+    }
+
+    @Override
+    public Class<? extends List> getImplType() {
+        return implType;
+    }
+
+    public void setImplType(Class<? extends List> implType) {
+        this.implType = implType;
     }
 }

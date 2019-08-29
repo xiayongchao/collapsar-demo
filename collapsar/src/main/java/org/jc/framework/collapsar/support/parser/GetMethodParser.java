@@ -9,6 +9,7 @@ import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * @author jc
@@ -52,11 +53,12 @@ public class GetMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodReturnType() {
-        if (!method.getReturnType().equals(methodDefinition.getTargetType())) {
+        Type returnType = method.getAnnotatedReturnType().getType();
+        if (!returnType.equals(methodDefinition.getTargetType())) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s]",
                     methodFullName, methodDefinition.getTargetType().getName());
         }
-        cachesMethod.setReturnType(method.getReturnType());
+        cachesMethod.setReturnType(returnType);
         return this;
     }
 }

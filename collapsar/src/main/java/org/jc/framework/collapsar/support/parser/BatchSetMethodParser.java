@@ -9,9 +9,11 @@ import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.support.ExpireCalculator;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.util.StringUtils;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * @author jc
@@ -61,21 +63,34 @@ public class BatchSetMethodParser extends MethodParser {
             throw new CollapsarException("[%s]注解的方法[%s]必须提供一个@Value注解的参数",
                     operate.getName(), methodFullName);
         }
-        if (!valueParameterType.equals(methodDefinition.getTargetType())) {
-            throw new CollapsarException("方法[%s]的@Value形参类型请使用[%s]",
-                    methodFullName, methodDefinition.getTargetType().getName());
+        if (!(valueParameterType instanceof ParameterizedTypeImpl)) {
+            throw new CollapsarException("方法[%s]的@Value参数类型请使用[%s<%s>]或其实现类",
+                    methodFullName, List.class.getName(), methodDefinition.getTargetType().getName());
         }
+        ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) valueParameterType;
+        try {
+            (parameterizedType.getRawType()).asSubclass(List.class);
+        } catch (ClassCastException e) {
+            throw new CollapsarException("方法[%s]的@Value参数类型请使用[%s<%s>]或其实现类",
+                    methodFullName, List.class.getName(), methodDefinition.getTargetType().getName());
+        }
+        if (!parameterizedType.getActualTypeArguments()[0].equals(methodDefinition.getTargetType())) {
+            throw new CollapsarException("方法[%s]的@Value参数类型请使用[%s<%s>]或其实现类",
+                    methodFullName, List.class.getName(), methodDefinition.getTargetType().getName());
+        }
+
         cachesMethod.setParameterKeyBuilders(getParameterKeyBuilders(parameterNames, parameterDefinitions));
         return this;
     }
 
     @Override
     MethodParser parseMethodReturnType() {
-        if (!Void.TYPE.equals(method.getReturnType())) {
+        Type returnType = method.getAnnotatedReturnType().getType();
+        if (!returnType.equals(Void.TYPE)) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s]",
                     methodFullName, Void.TYPE.getName());
         }
-        cachesMethod.setReturnType(method.getReturnType());
+        cachesMethod.setReturnType(returnType);
         return this;
     }
 }

@@ -1,5 +1,7 @@
 package org.jc.framework.collapsar.extend;
 
+import java.lang.reflect.Type;
+
 /**
  * @author yc_xia
  */
@@ -8,11 +10,11 @@ public interface CacheRepository {
      * 获取缓存
      *
      * @param key
-     * @param tClass
+     * @param type
      * @param <T>
      * @return
      */
-    <T> T get(String key, Class<T> tClass);
+    <T> T get(String key, Type type);
 
     /**
      * 设置缓存

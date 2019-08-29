@@ -1,6 +1,7 @@
 package org.jc.framework.collapsar.annotation;
 
 import java.lang.annotation.*;
+import java.util.List;
 
 /**
  * 标识缓存Get操作
@@ -12,4 +13,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface BatchGetOperate {
+    Class<? extends List> implType();
 }

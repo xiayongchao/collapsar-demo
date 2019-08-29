@@ -4,6 +4,7 @@ import org.jc.framework.collapsar.annotation.*;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Caches(targetType = User.class)
@@ -20,14 +21,14 @@ public interface UserCaches {
     @BatchDelOperate
     void batchDelById(@Key("id") List<Long> idList);
 
-    @BatchGetOperate
+    @BatchGetOperate(implType = ArrayList.class)
     List<User> batchGetById(@Key("id") List<Long> idList);
 
-    @BatchGetOperate
-    void batchGetByIdAndUserNameAndMoney(@Key("id") Long id, @Keys("money") List<Order> orderList, @Keys("userName") List<User> userList);
+    @BatchGetOperate(implType = ArrayList.class)
+    List<User> batchGetByIdAndUserNameAndMoney(@Key("id") Long id, @Keys("money") List<Order> orderList, @Keys("userName") List<User> userList);
 
-//    @BatchSetOperate
-//    void batchSetById(@Value List<User> user);
+    @BatchSetOperate
+    void batchSetById(@Value List<User> user);
 
     @SetOperate
     void setByIdAndUserName(@Value User user);

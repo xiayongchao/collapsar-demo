@@ -165,7 +165,7 @@ public abstract class MethodParser {
         return (Class<?>) parameterType;
     }
 
-    private boolean isBatch() {
+    protected boolean isBatch() {
         if (Operate.BATCH_SET.equals(operate) || Operate.BATCH_GET.equals(operate) || Operate.BATCH_DEL.equals(operate)) {
             return true;
         }

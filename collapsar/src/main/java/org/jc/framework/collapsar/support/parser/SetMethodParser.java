@@ -71,11 +71,12 @@ public class SetMethodParser extends MethodParser {
 
     @Override
     MethodParser parseMethodReturnType() {
-        if (!Void.TYPE.equals(method.getReturnType())) {
+        Type returnType = method.getAnnotatedReturnType().getType();
+        if (!returnType.equals(Void.TYPE)) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s]",
                     methodFullName, Void.TYPE.getName());
         }
-        cachesMethod.setReturnType(method.getReturnType());
+        cachesMethod.setReturnType(returnType);
         return this;
     }
 }

@@ -6,7 +6,9 @@ import org.jc.framework.collapsar.annotation.Value;
 import org.jc.test.collapsar.caches.UserCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
+import org.jc.test.collapsar.util.Gsons;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,21 +58,22 @@ public class UserCachesPenetrations implements UserCaches {
     @Override
     public List<User> batchGetById(List<Long> idList) {
         System.out.println("batchGetById");
+        List<User> userList = new ArrayList<>();
+        userList.add(new User(1L, "xxx", "123"));
+        userList.add(new User(2L, "yyy", "456"));
+        userList.add(new User(3L, "ccc", "789"));
+        return userList;
+    }
+
+    @Override
+    public List<User> batchGetByIdAndUserNameAndMoney(Long id, List<Order> orderList, List<User> userList) {
+        System.out.println("batchGetByIdAndUserNameAndMoney");
         return null;
     }
 
     @Override
-    public void batchGetByIdAndUserNameAndMoney(Long id, List<Order> orderList, List<User> userList) {
-        System.out.println("batchGetByIdAndUserNameAndMoney");
+    public void batchSetById(@Value List<User> user) {
+        System.out.println("batchSetById");
+        System.out.println(Gsons.getJson(user));
     }
-
-    //    @Override
-//    public void batchGetById(@Key("id") List<Long> idList) {
-//
-//    }
-
-//    @Override
-//    public void batchSetById(@Value List<User> user) {
-//
-//    }
 }

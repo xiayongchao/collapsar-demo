@@ -2,8 +2,10 @@ package org.jc.test.collapsar.redis;
 
 import com.alibaba.fastjson.JSON;
 import org.jc.framework.collapsar.extend.CacheRepository;
+import org.jc.test.collapsar.util.Gsons;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,16 +16,20 @@ import java.util.Map;
  */
 @Component
 public class RedisHelper implements CacheRepository {
-    private Map<String, String> cacheMap = new HashMap<>();
+    private static Map<String, String> cacheMap = new HashMap<>();
+
+    static {
+        cacheMap.put("comment:User:id_1", "{\"id\":1,\"userName\":\"xxx\",\"password\":\"123\"}");
+    }
 
     @Override
-    public <T> T get(String key, Class<T> tClass) {
+    public <T> T get(String key, Type type) {
         String json = cacheMap.get(key);
         System.err.println(String.format("get {key:%s,value:%s}", key, json));
         if (json == null) {
             return null;
         }
-        return JSON.parseObject(json, tClass);
+        return Gsons.getObject(json, (Class<T>) type);
     }
 
     @Override
