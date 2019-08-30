@@ -11,7 +11,9 @@ import java.util.List;
 @Caches(targetType = User.class)
 public interface UserCaches {
     @SetOperate
-    void setById(@Key("id") Long id, @Value User user);
+    default void setById(@Key("id") Long id, @Value User user) {
+
+    }
 
     void setById(User user);
 
