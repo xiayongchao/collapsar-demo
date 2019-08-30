@@ -3,10 +3,13 @@ package org.jc.test.collapsar.penetration;
 import org.jc.framework.collapsar.annotation.Key;
 import org.jc.framework.collapsar.annotation.Penetrations;
 import org.jc.framework.collapsar.annotation.Value;
+import org.jc.framework.collapsar.support.parser.Optional;
 import org.jc.test.collapsar.caches.UserCaches;
+import org.jc.test.collapsar.common.CommonCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 import org.jc.test.collapsar.util.Gsons;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.List;
  */
 @Penetrations
 public class UserCachesPenetrations implements UserCaches {
+    @Autowired
+    private CommonCaches commonCaches;
+
     @Override
     public void setById(@Key("id") Long id, @Value User user) {
         System.out.println("发大水时发大水");
@@ -26,6 +32,7 @@ public class UserCachesPenetrations implements UserCaches {
     public void setById(User user) {
         System.out.println(Gsons.getJson(user));
         System.out.println("我只是一个普通的方法");
+        commonCaches.delUserById(333L);
     }
 
     //    @Override
@@ -62,13 +69,13 @@ public class UserCachesPenetrations implements UserCaches {
     }
 
     @Override
-    public List<User> batchGetById(List<Long> idList) {
+    public Optional<User> batchGetById(List<Long> idList) {
         System.out.println("batchGetById");
         List<User> userList = new ArrayList<>();
         userList.add(new User(1L, "xxx", "123"));
         userList.add(new User(2L, "yyy", "456"));
         userList.add(new User(3L, "ccc", "789"));
-        return userList;
+        return Optional.of(userList);
     }
 
     @Override

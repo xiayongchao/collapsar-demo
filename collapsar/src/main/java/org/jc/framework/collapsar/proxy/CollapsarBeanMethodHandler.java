@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author xiayc
  * @date 2018/10/25
  */
-public interface CachesBeanMethodHandler extends MethodHandler {
+public interface CollapsarBeanMethodHandler extends MethodHandler {
     /**
      * 注册方法
      *

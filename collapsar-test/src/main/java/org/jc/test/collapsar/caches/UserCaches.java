@@ -1,6 +1,7 @@
 package org.jc.test.collapsar.caches;
 
 import org.jc.framework.collapsar.annotation.*;
+import org.jc.framework.collapsar.support.parser.Optional;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 
@@ -24,7 +25,7 @@ public interface UserCaches {
     void batchDelById(@Key("id") List<Long> idList);
 
     @BatchGetOperate(implType = ArrayList.class)
-    List<User> batchGetById(@Key("id") List<Long> idList);
+    Optional<User> batchGetById(@Key("id") List<Long> idList);
 
     @BatchGetOperate(implType = ArrayList.class)
     List<User> batchGetByIdAndUserNameAndMoney(@Key("id") Long id, @Keys("money") List<Order> orderList, @Keys("userName") List<User> userList);

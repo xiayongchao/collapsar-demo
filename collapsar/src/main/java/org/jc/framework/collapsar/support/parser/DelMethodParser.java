@@ -3,10 +3,9 @@ package org.jc.framework.collapsar.support.parser;
 import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.MethodDefinition;
-import org.jc.framework.collapsar.definition.ParameterDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
-import org.jc.framework.collapsar.util.ArrayUtils;
-import org.springframework.util.StringUtils;
+import org.jc.framework.collapsar.proxy.invoker.AbstractMethodInvoker;
+import org.jc.framework.collapsar.proxy.invoker.DelMethodInvoker;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -16,40 +15,35 @@ import java.lang.reflect.Type;
  * @date 2019/8/26 21:58
  */
 public class DelMethodParser extends MethodParser {
-    DelMethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
-        super(operate, method, methodDefinition);
+    private final DelMethodInvoker methodInvoker = new DelMethodInvoker();
+
+    public DelMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
+        super(Operate.DEL, method, methodDefinition, penetrationsBean);
     }
 
     @Override
-    MethodParser parseMethodParameter() {
-        String nominateKey = operate.removePrefix(method.getName(), cachesMethod.getModuleName(), methodDefinition.isMulti());
-        if (StringUtils.isEmpty(nominateKey)) {
-            throw new CollapsarException("非法的[%s]方法[%s]命名,请提供Key的名称", operate.getName(), methodFullName);
-        }
-        String[] parameterNames = nominateKey.split(METHOD_NAME_SEPARATOR);
-        ParameterDefinition[] parameterDefinitions = getParameterDefinitions();
-        if (ArrayUtils.isEmpty(parameterDefinitions)) {
-            throw new CollapsarException("[%s]方法[%s]入参不能为空", operate.getName(), methodFullName);
-        }
-
+    public MethodParser parseMethodParameterValue() {
         for (int i = 0; i < parameterDefinitions.length; i++) {
             if (ParamType.VALUE.equals(parameterDefinitions[i].getParamType())) {
                 throw new CollapsarException("[%s]注解的方法[%s]的形参中不能有参数使用注解[@Value]",
-                        operate.getName(), methodFullName);
+                        operate.getName(), methodInvoker.getMethodFullName());
             }
         }
-        cachesMethod.setParameterKeyBuilders(getParameterKeyBuilders(parameterNames, parameterDefinitions));
         return this;
     }
 
     @Override
-    MethodParser parseMethodReturnType() {
+    public MethodParser parseMethodReturnType() {
         Type returnType = method.getAnnotatedReturnType().getType();
         if (!returnType.equals(Void.TYPE)) {
             throw new CollapsarException("方法[%s]的返回值类型请使用[%s]",
-                    methodFullName, Void.TYPE.getName());
+                    methodInvoker.getMethodFullName(), Void.TYPE.getName());
         }
-        cachesMethod.setReturnType(returnType);
         return this;
+    }
+
+    @Override
+    public AbstractMethodInvoker get() {
+        return methodInvoker;
     }
 }

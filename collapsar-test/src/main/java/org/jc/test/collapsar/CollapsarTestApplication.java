@@ -6,8 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@CollapsarComponentScan(projectName = "ask", basePackages = {"org.jc.test.collapsar.common", "org.jc.test.collapsar.penetration"})
-@EnableCollapsarConfiguration(projectName = "comment", basePackages = {"org.jc.test.collapsar.caches"})
+@CollapsarComponentScan(projectName = "ask", basePackages = {"org.jc.test.collapsar.common"})
+@EnableCollapsarConfiguration(projectName = "comment", basePackages = {"org.jc.test.collapsar.caches", "org.jc.test.collapsar.penetration"})
 public class CollapsarTestApplication {
 
     public static void main(String[] args) {

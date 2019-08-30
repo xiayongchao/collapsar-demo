@@ -1,8 +1,8 @@
 package org.jc.framework.collapsar.core;
 
 import org.jc.framework.collapsar.extend.CacheRepository;
-import org.jc.framework.collapsar.proxy.CachesBeanMethodHandler;
-import org.jc.framework.collapsar.proxy.CachesBeanMethodHandlerImpl;
+import org.jc.framework.collapsar.proxy.CollapsarBeanMethodHandler;
+import org.jc.framework.collapsar.proxy.CollapsarBeanMethodHandlerImpl;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,10 @@ import org.springframework.context.annotation.Role;
  */
 @Configuration
 public class CollapsarConfiguration {
-
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.proxy.CachesBeanMethodHandler")
-    public CachesBeanMethodHandler cachesBeanMethodHandler(CacheRepository cacheRepository) {
-        return new CachesBeanMethodHandlerImpl(cacheRepository);
+    public CollapsarBeanMethodHandler cachesBeanMethodHandler(CacheRepository cacheRepository) {
+        return new CollapsarBeanMethodHandlerImpl(cacheRepository);
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
@@ -44,8 +43,8 @@ public class CollapsarConfiguration {
     public CollapsarMergedBeanDefinitionPostProcessor collapsarMergedBeanDefinitionPostProcessor(
             CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser, MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
             PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
-            CachesBeanMethodHandler cachesBeanMethodHandler) {
+            CollapsarBeanMethodHandler collapsarBeanMethodHandler) {
         return new CollapsarMergedBeanDefinitionPostProcessor(cachesBeanDefinitionScanParser, multiCachesBeanDefinitionScanParser,
-                penetrationsBeanDefinitionScanParser, cachesBeanMethodHandler);
+                penetrationsBeanDefinitionScanParser, collapsarBeanMethodHandler);
     }
 }

@@ -2,7 +2,7 @@ package org.jc.framework.collapsar.support.handler;
 
 
 import org.jc.framework.collapsar.definition.MethodDefinition;
-import org.jc.framework.collapsar.support.CachesMethod;
+import org.jc.framework.collapsar.proxy.invoker.MethodInvoker;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +19,7 @@ public abstract class MethodParseHandler {
      * @param methodDefinition
      * @return
      */
-    public abstract CachesMethod handleMethod(Method method, MethodDefinition methodDefinition);
+    public abstract MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition, Object penetrationsBean);
 
     public MethodParseHandler getNextHandler() {
         return nextHandler;
@@ -47,7 +47,7 @@ public abstract class MethodParseHandler {
         return setMethodParseHandler;
     }
 
-    public static CachesMethod parseHandleMethod(Method method, MethodDefinition methodDefinition) {
-        return METHOD_PARSE_HANDLER.handleMethod(method, methodDefinition);
+    public static MethodInvoker parseHandleMethod(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
+        return METHOD_PARSE_HANDLER.handleMethod(method, methodDefinition, penetrationsBean);
     }
 }

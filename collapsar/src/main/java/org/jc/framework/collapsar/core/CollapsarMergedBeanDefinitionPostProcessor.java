@@ -9,7 +9,7 @@ import org.jc.framework.collapsar.annotation.EnableCollapsarConfiguration;
 import org.jc.framework.collapsar.annotation.MultiCaches;
 import org.jc.framework.collapsar.definition.*;
 import org.jc.framework.collapsar.exception.CollapsarException;
-import org.jc.framework.collapsar.proxy.CachesBeanMethodHandler;
+import org.jc.framework.collapsar.proxy.CollapsarBeanMethodHandler;
 import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -39,17 +39,17 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
     private final CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser;
     private final MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser;
     private final PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser;
-    private final CachesBeanMethodHandler cachesBeanMethodHandler;
+    private final CollapsarBeanMethodHandler collapsarBeanMethodHandler;
     private final Set<String> collapsarBeans = new HashSet<>();
 
     CollapsarMergedBeanDefinitionPostProcessor(CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser,
                                                MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
                                                PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
-                                               CachesBeanMethodHandler cachesBeanMethodHandler) {
+                                               CollapsarBeanMethodHandler collapsarBeanMethodHandler) {
         this.cachesBeanDefinitionScanParser = cachesBeanDefinitionScanParser;
         this.multiCachesBeanDefinitionScanParser = multiCachesBeanDefinitionScanParser;
         this.penetrationsBeanDefinitionScanParser = penetrationsBeanDefinitionScanParser;
-        this.cachesBeanMethodHandler = cachesBeanMethodHandler;
+        this.collapsarBeanMethodHandler = collapsarBeanMethodHandler;
     }
 
     @Override
@@ -132,10 +132,10 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         factory.setInterfaces(new Class[]{beanType});
 
         object = factory.create(new Class[0], new Object[0]);
-        ((Proxy) object).setHandler(cachesBeanMethodHandler);
+        ((Proxy) object).setHandler(collapsarBeanMethodHandler);
 
         for (Method method : methods) {
-            cachesBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), methodDefinition);
+            collapsarBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), methodDefinition);
         }
 
         //将生成的对象注册到Spring容器
