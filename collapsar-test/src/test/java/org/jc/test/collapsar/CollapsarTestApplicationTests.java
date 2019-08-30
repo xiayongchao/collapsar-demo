@@ -1,5 +1,6 @@
 package org.jc.test.collapsar;
 
+import org.jc.framework.collapsar.support.parser.Optional;
 import org.jc.test.collapsar.common.CommonCaches;
 import org.jc.test.collapsar.caches.UserCaches;
 import org.jc.test.collapsar.modal.Order;
@@ -60,7 +61,8 @@ public class CollapsarTestApplicationTests {
         idList.add(1L);
         idList.add(2L);
         idList.add(3L);
-        System.out.println(Gsons.getJson(userCaches.batchGetById(idList)));
+        Optional<User> userOptional = userCaches.batchGetById(idList);
+        System.out.println(Gsons.getJson(userOptional));
     }
 
     @Test

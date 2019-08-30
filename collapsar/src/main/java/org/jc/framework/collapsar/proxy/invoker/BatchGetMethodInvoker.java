@@ -3,6 +3,7 @@ package org.jc.framework.collapsar.proxy.invoker;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.extend.CacheRepository;
 import org.jc.framework.collapsar.support.builder.ParameterKeyBuilder;
+import org.jc.framework.collapsar.support.parser.Optional;
 import org.springframework.util.CollectionUtils;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
@@ -45,10 +46,21 @@ public class BatchGetMethodInvoker extends AbstractBatchMethodInvoker {
         }
         if (!CollectionUtils.isEmpty(noHitIndexList)) {
             filterArgs = filterArgs(noHitIndexList, args);
-            Object noHitList = invokePenetrationMethod(filterArgs);
-            if (noHitList != null) {
-                list.addAll((List<?>) noHitList);
+            Object penetrationResult = invokePenetrationMethod(filterArgs);
+            if (penetrationResult != null) {
+                if (penetrationResult instanceof Optional) {
+                    Optional optional = (Optional) penetrationResult;
+                    if (optional.get() != null) {
+                        list.addAll(optional.get());
+                    }
+                    noHitIndexList = optional.getNoHitIndexList();
+                } else {
+                    list.addAll((List<?>) penetrationResult);
+                }
             }
+        }
+        if (((ParameterizedTypeImpl) returnType).getRawType().equals(Optional.class)) {
+            return Optional.of(list, noHitIndexList);
         }
         return list;
     }

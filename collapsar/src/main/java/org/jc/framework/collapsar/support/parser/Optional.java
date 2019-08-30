@@ -36,7 +36,7 @@ public class Optional<T> {
         return list;
     }
 
-    public List<Integer> getNoHit() {
+    public List<Integer> getNoHitIndexList() {
         return noHitIndexList;
     }
 
