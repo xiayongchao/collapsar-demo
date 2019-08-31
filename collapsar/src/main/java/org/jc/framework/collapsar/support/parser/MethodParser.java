@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/8/26 21:59
  */
 public abstract class MethodParser {
-    final static String METHOD_NAME_SEPARATOR = "And";
+    protected final static String METHOD_NAME_SEPARATOR = "And";
     protected final Operate operate;
     protected final Method method;
     protected final MethodDefinition methodDefinition;
@@ -41,6 +41,9 @@ public abstract class MethodParser {
     protected ParameterDefinition[] parameterDefinitions;
 
     public MethodParser(Operate operate, Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
+        if (!Operate.NONE.equals(operate) && method.isDefault()) {
+            throw new CollapsarException("interface default方法[%s]不支持使用[%s]", method.toString(), Operate.ENABLE_METHOD_ANNOTATIONS_STRING);
+        }
         this.operate = operate;
         this.method = method;
         this.methodDefinition = methodDefinition;

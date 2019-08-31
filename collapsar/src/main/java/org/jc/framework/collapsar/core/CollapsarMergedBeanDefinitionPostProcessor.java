@@ -135,7 +135,6 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         ((Proxy) object).setHandler(collapsarBeanMethodHandler);
 
         for (Method method : methods) {
-            method.isDefault()
             collapsarBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), methodDefinition);
         }
 
