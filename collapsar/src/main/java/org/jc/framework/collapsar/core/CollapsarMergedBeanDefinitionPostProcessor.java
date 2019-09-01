@@ -79,8 +79,9 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
             try {
                 Set<CachesBeanDefinition> cachesBeanDefinitions = cachesBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
                 Set<MultiCachesBeanDefinition> multiCachesBeanDefinitions = multiCachesBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
-                Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions = penetrationsBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
-                Map<String, Object> penetrationsBeanMap = createPenetrationsBeans(penetrationsBeanDefinitions);
+                /*Set<PenetrationsBeanDefinition> penetrationsBeanDefinitions = penetrationsBeanDefinitionScanParser.scanParse(collapsarBeans, collapsarComponentScanDefinition);
+                Map<String, Object> penetrationsBeanMap = createPenetrationsBeans(penetrationsBeanDefinitions);*/
+                Map<String, Object> penetrationsBeanMap = new HashMap<>();
                 this.registerCollapsarBeans(cachesBeanDefinitions, multiCachesBeanDefinitions, penetrationsBeanMap);
             } catch (IOException | NoSuchMethodException | InstantiationException
                     | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {

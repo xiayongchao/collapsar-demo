@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Caches(targetType = Order.class)
 public abstract class OrderCaches {
-//    @Autowired
-//    private CommonCaches commonCaches;
+    @Autowired
+    private CommonCaches commonCaches;
 
     @DelOperate
-    public abstract void delById(@Key("id") Long id);/* {
+    public void delById(@Key("id") Long id) {
         System.out.println("我是抽象类的delById");
-    }*/
+    }
 }
