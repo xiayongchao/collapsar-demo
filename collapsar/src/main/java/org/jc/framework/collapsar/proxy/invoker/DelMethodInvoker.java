@@ -3,6 +3,7 @@ package org.jc.framework.collapsar.proxy.invoker;
 import org.jc.framework.collapsar.extend.CacheRepository;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author jc
@@ -10,8 +11,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class DelMethodInvoker extends AbstractMethodInvoker {
     @Override
-    public Object invoke(CacheRepository cacheRepository, Object[] args) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         cacheRepository.del(generateKey(args));
-        return invokePenetrationMethod(args);
+        return invokePenetrationMethod(self, proceed, args);
     }
 }

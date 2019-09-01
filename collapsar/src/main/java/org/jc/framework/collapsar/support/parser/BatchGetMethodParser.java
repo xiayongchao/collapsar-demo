@@ -13,6 +13,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
+ * ${@link org.jc.framework.collapsar.annotation.BatchGetOperate}注解方法解析器
+ *
  * @author jc
  * @date 2019/8/26 21:58
  */

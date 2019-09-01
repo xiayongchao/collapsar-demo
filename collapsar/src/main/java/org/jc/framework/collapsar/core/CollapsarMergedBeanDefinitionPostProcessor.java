@@ -14,10 +14,11 @@ import org.jc.framework.collapsar.util.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -25,22 +26,20 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author xiayc
  * @date 2019/3/25
  */
-public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
+public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDefinitionPostProcessor, BeanFactoryAware, ApplicationListener<ContextRefreshedEvent> {
     private DefaultListableBeanFactory beanFactory;
     private final CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser;
     private final MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser;
     private final PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser;
     private final CollapsarBeanMethodHandler collapsarBeanMethodHandler;
     private final Set<String> collapsarBeans = new HashSet<>();
+    private final Set<Object> autowireBeans = new HashSet<>();
 
     CollapsarMergedBeanDefinitionPostProcessor(CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser,
                                                MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
@@ -121,23 +120,33 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         ProxyFactory factory;
         Object object;
         Class beanType = Class.forName(beanClassName, true, this.beanFactory.getBeanClassLoader());
-        if (!beanType.isInterface()) {
-            throw new CollapsarException("[%s]上不支持使用注解[@%s]", beanClassName, annotationClass.getName());
+        if (beanType.isEnum() || beanType.isArray() || beanType.isAnnotation()) {
+            throw new CollapsarException("[%s]类型上不支持使用注解[@%s]", beanClassName, annotationClass.getName());
         }
         if (this.beanFactory.containsBean(beanName)) {
             throw new CollapsarException("注册@%s Bean[%s]失败,已经存在同名Bean[name=%s]", annotationClass.getName(), beanClassName, beanName);
         }
         Method[] methods = beanType.getDeclaredMethods();
         factory = new ProxyFactory();
-        factory.setInterfaces(new Class[]{beanType});
+
+        if (beanType.isInterface()) {
+            factory.setInterfaces(new Class[]{beanType});
+        } else {
+            factory.setSuperclass(beanType);
+        }
 
         object = factory.create(new Class[0], new Object[0]);
+        System.out.println("----------------" + beanClassName);
+//        object = beanFactory.createBean(factory.createClass(), AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
         ((Proxy) object).setHandler(collapsarBeanMethodHandler);
+//        beanFactory..autowireBean(object);
+//        beanFactory.autowireBeanProperties(object, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
 
         for (Method method : methods) {
             collapsarBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), methodDefinition);
         }
 
+        autowireBeans.add(object);
         //将生成的对象注册到Spring容器
         this.beanFactory.registerSingleton(beanName, object);
     }
@@ -158,7 +167,14 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
                 throw new CollapsarException("无法解析Bean[%s],必须实现使用了@Caches/@MultiCaches注解的接口", penetrationsBeanClassName);
             }
             penetrationsBeanType = Class.forName(penetrationsBeanClassName, true, this.beanFactory.getBeanClassLoader());
-            penetrationsBean = beanFactory.createBean(penetrationsBeanType, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+            try {
+                penetrationsBean = penetrationsBeanType.getConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new CollapsarException(e, "实例化@Penetrations Bean，请排查构造方法是否有问题");
+            }
+//            penetrationsBean = beanFactory.createBean(penetrationsBeanType, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+            autowireBeans.add(penetrationsBean);
+            System.out.println("=========================" + penetrationsBeanClassName);
             for (String cachesInterfaceName : cachesInterfaceNames) {
                 cachesInterfaceType = Class.forName(cachesInterfaceName, true, this.beanFactory.getBeanClassLoader());
                 if (!cachesInterfaceType.isAnnotationPresent(Caches.class) && !cachesInterfaceType.isAnnotationPresent(MultiCaches.class)) {
@@ -171,5 +187,19 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
             }
         }
         return penetrationsBeanMap;
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        //root application context 没有parent，他就是老大.
+        if (contextRefreshedEvent.getApplicationContext().getParent() == null) {
+            //需要执行的逻辑代码，当spring容器初始化完成后就会执行该方法。
+            System.out.println("\n\n\n\n\n______________\n\n\n加载了\n\n_________\n\n");
+            if (!CollectionUtils.isEmpty(autowireBeans)) {
+                for (Object autowireBean : autowireBeans) {
+                    beanFactory.autowireBean(autowireBean);
+                }
+            }
+        }
     }
 }

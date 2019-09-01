@@ -4,7 +4,7 @@ import org.jc.framework.collapsar.annotation.Key;
 import org.jc.framework.collapsar.annotation.Keys;
 import org.jc.framework.collapsar.annotation.Penetrations;
 import org.jc.framework.collapsar.annotation.Value;
-import org.jc.test.collapsar.common.CommonCaches;
+import org.jc.test.collapsar.caches.CommonCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class CommonCachesPenetrations implements CommonCaches {
     @Override
     public void delUserById(@Key("id") Long id) {
-
+        System.out.println("缓存穿透 delUserById");
     }
 
     @Override

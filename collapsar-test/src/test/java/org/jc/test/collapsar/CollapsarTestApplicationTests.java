@@ -1,8 +1,10 @@
 package org.jc.test.collapsar;
 
 import org.jc.framework.collapsar.support.parser.Optional;
-import org.jc.test.collapsar.common.CommonCaches;
+import org.jc.test.collapsar.caches.AskCaches;
+import org.jc.test.collapsar.caches.OrderCaches;
 import org.jc.test.collapsar.caches.UserCaches;
+import org.jc.test.collapsar.caches.CommonCaches;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 import org.jc.test.collapsar.util.Gsons;
@@ -19,9 +21,23 @@ import java.util.List;
 @SpringBootTest
 public class CollapsarTestApplicationTests {
     @Autowired
+    private OrderCaches orderCaches;
+    @Autowired
     private UserCaches userCaches;
     @Autowired
     private CommonCaches commonCaches;
+    @Autowired
+    private AskCaches askCaches;
+
+    @Test
+    public void testAskDelById() {
+        askCaches.delById(234L);
+    }
+
+    @Test
+    public void testOrderDelById() {
+        orderCaches.delById(234L);
+    }
 
     @Test
     public void contextLoads() {

@@ -3,6 +3,7 @@ package org.jc.framework.collapsar.proxy.invoker;
 import org.jc.framework.collapsar.extend.CacheRepository;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 /**
@@ -13,10 +14,10 @@ public class GetMethodInvoker extends AbstractMethodInvoker {
     private Type returnType;
 
     @Override
-    public Object invoke(CacheRepository cacheRepository, Object[] args) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         Object object = cacheRepository.get(generateKey(args), returnType);
         if (object == null) {
-            object = invokePenetrationMethod(args);
+            object = invokePenetrationMethod(self, proceed, args);
         }
         return object;
     }

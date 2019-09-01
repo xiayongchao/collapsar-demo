@@ -10,6 +10,8 @@ import org.jc.framework.collapsar.proxy.invoker.OrdinaryMethodInvoker;
 import java.lang.reflect.Method;
 
 /**
+ * 普通方法解析器
+ *
  * @author jc
  * @date 2019/8/26 21:58
  */

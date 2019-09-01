@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +23,7 @@ public class BatchGetMethodInvoker extends AbstractBatchMethodInvoker {
     private Class<? extends List> implType;
 
     @Override
-    public Object invoke(CacheRepository cacheRepository, Object[] args) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         int size = calcListSize(args);
         Object[] filterArgs;
         ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) returnType;
@@ -46,7 +47,7 @@ public class BatchGetMethodInvoker extends AbstractBatchMethodInvoker {
         }
         if (!CollectionUtils.isEmpty(noHitIndexList)) {
             filterArgs = filterArgs(noHitIndexList, args);
-            Object penetrationResult = invokePenetrationMethod(filterArgs);
+            Object penetrationResult = invokePenetrationMethod(self, proceed, filterArgs);
             if (penetrationResult != null) {
                 if (penetrationResult instanceof Optional) {
                     Optional optional = (Optional) penetrationResult;

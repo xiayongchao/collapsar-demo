@@ -11,7 +11,10 @@ public abstract class PenetrationsMethodInvoker implements MethodInvoker {
     protected Object penetrationsBean;
     protected Method penetrationsMethod;
 
-    protected Object invokePenetrationMethod(Object[] args) throws InvocationTargetException, IllegalAccessException {
+    protected Object invokePenetrationMethod(Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
+        if (proceed != null) {
+            return proceed.invoke(self, args);
+        }
         if (penetrationsBean == null || penetrationsMethod == null) {
             return null;
         }

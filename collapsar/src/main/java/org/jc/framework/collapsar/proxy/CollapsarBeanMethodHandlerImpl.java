@@ -8,6 +8,7 @@ import org.jc.framework.collapsar.proxy.invoker.MethodInvoker;
 import org.jc.framework.collapsar.support.handler.MethodParseHandler;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,9 +42,12 @@ public class CollapsarBeanMethodHandlerImpl implements CollapsarBeanMethodHandle
                          Object[] args) throws Throwable {
         MethodInvoker methodInvoker = methodInvokerMap.get(thisMethod.toString());
         if (methodInvoker == null) {
+            if (Modifier.isNative(thisMethod.getModifiers()) && proceed != null) {
+                return proceed.invoke(self, args);
+            }
             throw new CollapsarException("未注册的Collapsar Bean方法[%s]",
                     thisMethod.toString());
         }
-        return methodInvoker.invoke(cacheRepository, args);
+        return methodInvoker.invoke(cacheRepository, self, proceed, args);
     }
 }

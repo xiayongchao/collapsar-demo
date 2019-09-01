@@ -3,6 +3,7 @@ package org.jc.framework.collapsar.proxy.invoker;
 import org.jc.framework.collapsar.extend.CacheRepository;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class BatchSetMethodInvoker extends AbstractBatchMethodInvoker {
     private int valueParameterIndex = -1;
 
     @Override
-    public Object invoke(CacheRepository cacheRepository, Object[] args) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         int size = calcListSize(args);
         Object[] filterArgs;
         for (int i = 0; i < size; i++) {
@@ -25,7 +26,7 @@ public class BatchSetMethodInvoker extends AbstractBatchMethodInvoker {
             cacheRepository.set(generateKey(filterArgs), selectValueParameter(i, args),
                     expire);
         }
-        return invokePenetrationMethod(args);
+        return invokePenetrationMethod(self, proceed, args);
     }
 
     private Object selectValueParameter(int i, Object[] args) {

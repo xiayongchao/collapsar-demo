@@ -2,7 +2,6 @@ package org.jc.framework.collapsar.support.parser;
 
 import org.jc.framework.collapsar.annotation.BatchSetOperate;
 import org.jc.framework.collapsar.constant.Operate;
-import org.jc.framework.collapsar.constant.ParamType;
 import org.jc.framework.collapsar.definition.MethodDefinition;
 import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.proxy.invoker.AbstractMethodInvoker;
@@ -14,6 +13,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
+ * ${@link org.jc.framework.collapsar.annotation.BatchSetOperate}注解方法解析器
+ *
  * @author jc
  * @date 2019/8/26 21:58
  */
