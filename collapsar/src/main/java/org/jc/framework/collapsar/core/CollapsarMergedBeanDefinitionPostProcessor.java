@@ -26,7 +26,10 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author xiayc
@@ -136,11 +139,7 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         }
 
         object = factory.create(new Class[0], new Object[0]);
-        System.out.println("----------------" + beanClassName);
-//        object = beanFactory.createBean(factory.createClass(), AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
         ((Proxy) object).setHandler(collapsarBeanMethodHandler);
-//        beanFactory..autowireBean(object);
-//        beanFactory.autowireBeanProperties(object, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
 
         for (Method method : methods) {
             collapsarBeanMethodHandler.registerMethod(method, penetrationsBeanMap.get(beanClassName), methodDefinition);
@@ -172,9 +171,7 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new CollapsarException(e, "实例化@Penetrations Bean，请排查构造方法是否有问题");
             }
-//            penetrationsBean = beanFactory.createBean(penetrationsBeanType, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
             autowireBeans.add(penetrationsBean);
-            System.out.println("=========================" + penetrationsBeanClassName);
             for (String cachesInterfaceName : cachesInterfaceNames) {
                 cachesInterfaceType = Class.forName(cachesInterfaceName, true, this.beanFactory.getBeanClassLoader());
                 if (!cachesInterfaceType.isAnnotationPresent(Caches.class) && !cachesInterfaceType.isAnnotationPresent(MultiCaches.class)) {
@@ -194,7 +191,6 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         //root application context 没有parent，他就是老大.
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {
             //需要执行的逻辑代码，当spring容器初始化完成后就会执行该方法。
-            System.out.println("\n\n\n\n\n______________\n\n\n加载了\n\n_________\n\n");
             if (!CollectionUtils.isEmpty(autowireBeans)) {
                 for (Object autowireBean : autowireBeans) {
                     beanFactory.autowireBean(autowireBean);

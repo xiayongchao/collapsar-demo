@@ -21,6 +21,8 @@ import java.util.List;
 @Penetrations
 public class UserCachesPenetrations implements UserCaches {
     @Autowired
+    private UserCaches userCaches;
+    @Autowired
     private CommonCaches commonCaches;
 
     @Override
@@ -33,6 +35,7 @@ public class UserCachesPenetrations implements UserCaches {
         System.out.println(Gsons.getJson(user));
         System.out.println("我只是一个普通的方法");
         commonCaches.delUserById(333L);
+        userCaches.setById(user);
     }
 
     //    @Override
