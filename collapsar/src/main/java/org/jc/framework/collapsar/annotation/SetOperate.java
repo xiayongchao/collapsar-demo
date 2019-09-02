@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@CacheOperate
 public @interface SetOperate {
     /**
      * 缓存过期时间，单位是${@link #unit()}

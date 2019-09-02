@@ -12,6 +12,7 @@ import java.util.List;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@CacheOperate
 public @interface BatchGetOperate {
     Class<? extends List> implType();
 }

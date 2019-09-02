@@ -3,14 +3,11 @@ package org.jc.framework.collapsar.annotation;
 import java.lang.annotation.*;
 
 /**
- * 标识缓存Get操作
- *
  * @author xiayc
- * @date 2019/3/26
+ * @date 2019/9/2
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@CacheOperate
-public @interface GetOperate {
+public @interface CacheOperate {
 }
