@@ -28,13 +28,13 @@ public class UserCachesPenetrations implements UserCaches {
         System.out.println("发大水时发大水");
     }
 
-    @Override
+    /*@Override
     public void setById(User user) {
         System.out.println(Gsons.getJson(user));
         System.out.println("我只是一个普通的方法");
         commonCaches.delUserById(333L);
         userCaches.setById(user);
-    }
+    }*/
 
     //    @Override
     public void setByIdxxx(@Value User user) {

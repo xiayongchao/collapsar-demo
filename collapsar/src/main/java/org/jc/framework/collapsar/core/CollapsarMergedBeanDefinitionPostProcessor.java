@@ -133,41 +133,12 @@ public class CollapsarMergedBeanDefinitionPostProcessor implements MergedBeanDef
         ((Proxy) object).setHandler(collapsarBeanMethodHandler);
 
         for (Method method : methods) {
-            if (!isCacheOperate(method)) {
-                continue;
-            }
             collapsarBeanMethodHandler.registerMethod(method, methodDefinition);
         }
 
         autowireBeans.add(object);
         //将生成的对象注册到Spring容器
         this.beanFactory.registerSingleton(beanName, object);
-    }
-
-    private boolean isCacheOperate(Method method) {
-        if (method == null) {
-            return false;
-        }
-        return isCacheOperate(method.getDeclaredAnnotations());
-    }
-
-    private boolean isCacheOperate(Annotation[] annotations) {
-        if (ArrayUtils.isEmpty(annotations)) {
-            return false;
-        }
-
-        for (Annotation annotation : annotations) {
-            if (annotation == null) {
-                continue;
-            }
-            if (annotation.annotationType().isAnnotationPresent(CacheOperate.class)) {
-                return true;
-            }
-            if (isCacheOperate(annotation.annotationType().getDeclaredAnnotations())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

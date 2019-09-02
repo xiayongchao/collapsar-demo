@@ -11,6 +11,5 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@CacheOperate
 public @interface BatchDelOperate {
 }

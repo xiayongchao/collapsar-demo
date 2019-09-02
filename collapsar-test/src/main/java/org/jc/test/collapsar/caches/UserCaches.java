@@ -13,7 +13,8 @@ public interface UserCaches {
     @SetOperate
     void setById(@Key("id") Long id, @Value User user);
 
-    void setById(User user);
+//    @SetOperate
+//    void setById(User user);
 
     @DelOperate
     void delById(@Key("id") Long id);

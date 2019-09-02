@@ -1,10 +1,13 @@
 package org.jc.framework.collapsar.support.handler;
 
+import org.jc.framework.collapsar.constant.Operate;
 import org.jc.framework.collapsar.definition.MethodDefinition;
+import org.jc.framework.collapsar.exception.CollapsarException;
 import org.jc.framework.collapsar.proxy.invoker.MethodInvoker;
 import org.jc.framework.collapsar.support.parser.OrdinaryMethodParser;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * @author jc
@@ -17,6 +20,9 @@ public class OrdinaryMethodParseHandler extends MethodParseHandler {
 
     @Override
     public MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition) {
+        if (Modifier.isAbstract(method.getModifiers())) {
+            throw new CollapsarException("abstract方法[%s]请加上[%s]注解", method.toString(), Operate.ENABLE_METHOD_ANNOTATIONS_STRING);
+        }
         return getMethodInvoker(method, methodDefinition);
     }
 

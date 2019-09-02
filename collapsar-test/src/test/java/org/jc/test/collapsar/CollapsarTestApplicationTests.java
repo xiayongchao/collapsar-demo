@@ -36,7 +36,9 @@ public class CollapsarTestApplicationTests {
 
     @Test
     public void testOrderDelById() {
-        orderCaches.delById(234L);
+//        orderCaches.delById(234L);
+        orderCaches.getById(145L);
+//        orderCaches.getByUserId(42L);
     }
 
     @Test
@@ -92,7 +94,7 @@ public class CollapsarTestApplicationTests {
 
     @Test
     public void setById() {
-        userCaches.setById(new User(3L, "ccc", "789"));
+//        userCaches.setById(new User(3L, "ccc", "789"));
     }
 
     @Test

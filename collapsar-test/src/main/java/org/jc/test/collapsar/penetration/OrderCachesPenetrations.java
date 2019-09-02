@@ -11,4 +11,14 @@ public class OrderCachesPenetrations extends OrderCaches {
     public void delById(Long id) {
         System.out.println("OrderCachesPenetrations#delById");
     }
+
+//    @Override
+    public void getByUserId(Long id) {
+
+    }
+
+//    @Override
+    protected void getByMoney(Long id) {
+
+    }
 }
