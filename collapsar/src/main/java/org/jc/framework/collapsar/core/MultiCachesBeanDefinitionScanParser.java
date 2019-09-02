@@ -21,6 +21,7 @@ public class MultiCachesBeanDefinitionScanParser extends CollapsarBeanDefinition
         super(MultiCaches.class);
     }
 
+    @Override
     protected MultiCachesBeanDefinition generateBeanDefinition(final String projectName, final String connector, final AnnotationMetadata annotationMetadata, final String annotationName) {
         Set<String> annotationTypes = annotationMetadata.getAnnotationTypes();
         if (annotationTypes.isEmpty()) {

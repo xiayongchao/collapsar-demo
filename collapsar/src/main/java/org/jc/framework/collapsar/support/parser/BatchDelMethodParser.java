@@ -18,8 +18,8 @@ import java.lang.reflect.Type;
 public class BatchDelMethodParser extends MethodParser {
     private final BatchDelMethodInvoker methodInvoker = new BatchDelMethodInvoker();
 
-    public BatchDelMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        super(Operate.BATCH_DEL, method, methodDefinition, penetrationsBean);
+    public BatchDelMethodParser(Method method, MethodDefinition methodDefinition) {
+        super(Operate.BATCH_DEL, method, methodDefinition);
     }
 
     @Override

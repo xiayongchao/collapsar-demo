@@ -47,7 +47,7 @@ public class BatchGetMethodInvoker extends AbstractBatchMethodInvoker {
         }
         if (!CollectionUtils.isEmpty(noHitIndexList)) {
             filterArgs = filterArgs(noHitIndexList, args);
-            Object penetrationResult = invokePenetrationMethod(self, proceed, filterArgs);
+            Object penetrationResult = invokeProceedMethod(self, proceed, filterArgs);
             if (penetrationResult != null) {
                 if (penetrationResult instanceof Optional) {
                     Optional optional = (Optional) penetrationResult;

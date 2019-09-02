@@ -8,7 +8,7 @@ import java.util.StringJoiner;
  * @author jc
  * @date 2019/8/30 1:01
  */
-public abstract class AbstractMethodInvoker extends PenetrationsMethodInvoker {
+public abstract class AbstractMethodInvoker implements MethodInvoker {
     protected String methodFullName;
     protected String projectName;
     protected String moduleName;

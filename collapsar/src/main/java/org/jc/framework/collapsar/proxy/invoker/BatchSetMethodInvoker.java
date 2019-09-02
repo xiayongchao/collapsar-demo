@@ -26,7 +26,7 @@ public class BatchSetMethodInvoker extends AbstractBatchMethodInvoker {
             cacheRepository.set(generateKey(filterArgs), selectValueParameter(i, args),
                     expire);
         }
-        return invokePenetrationMethod(self, proceed, args);
+        return invokeProceedMethod(self, proceed, args);
     }
 
     private Object selectValueParameter(int i, Object[] args) {

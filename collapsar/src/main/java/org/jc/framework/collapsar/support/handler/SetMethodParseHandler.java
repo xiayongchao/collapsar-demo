@@ -14,13 +14,13 @@ import java.lang.reflect.Method;
  */
 public class SetMethodParseHandler extends MethodParseHandler {
     @Override
-    public MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
+    public MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition) {
         if (!method.isAnnotationPresent(SetOperate.class)) {
             if (getNextHandler() != null) {
-                return getNextHandler().handleMethod(method, methodDefinition, penetrationsBean);
+                return getNextHandler().handleMethod(method, methodDefinition);
             }
-            return new OrdinaryMethodParser(method, methodDefinition, penetrationsBean).getMethodInvoker();
+            return new OrdinaryMethodParser(method, methodDefinition).getMethodInvoker();
         }
-        return new SetMethodParser(method, methodDefinition, penetrationsBean).getMethodInvoker();
+        return new SetMethodParser(method, methodDefinition).getMethodInvoker();
     }
 }

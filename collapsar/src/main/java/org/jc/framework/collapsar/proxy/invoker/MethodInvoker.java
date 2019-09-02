@@ -11,4 +11,11 @@ import java.lang.reflect.Method;
  */
 public interface MethodInvoker {
     Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException;
+
+    default Object invokeProceedMethod(Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
+        if (proceed != null) {
+            return proceed.invoke(self, args);
+        }
+        return null;
+    }
 }

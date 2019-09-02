@@ -49,6 +49,7 @@ public class CachesBeanDefinitionScanParser extends CollapsarBeanDefinitionScanP
         return true;
     }
 
+    @Override
     protected CachesBeanDefinition generateBeanDefinition(final String projectName,
                                                           final String connector, final AnnotationMetadata annotationMetadata, final String annotationName) {
         Set<String> annotationTypes = annotationMetadata.getAnnotationTypes();

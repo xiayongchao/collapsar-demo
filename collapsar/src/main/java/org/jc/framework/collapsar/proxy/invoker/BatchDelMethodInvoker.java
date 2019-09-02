@@ -18,6 +18,6 @@ public class BatchDelMethodInvoker extends AbstractBatchMethodInvoker {
             filterArgs = filterArgs(i, args);
             cacheRepository.del(generateKey(filterArgs));
         }
-        return invokePenetrationMethod(self, proceed, args);
+        return invokeProceedMethod(self, proceed, args);
     }
 }

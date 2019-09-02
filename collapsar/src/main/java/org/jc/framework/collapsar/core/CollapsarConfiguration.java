@@ -33,18 +33,11 @@ public class CollapsarConfiguration {
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean(name = "org.jc.framework.collapsar.core.PenetrationsBeanDefinitionScanParser")
-    public PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser() {
-        return new PenetrationsBeanDefinitionScanParser();
-    }
-
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean(name = "org.jc.framework.collapsar.core.CollapsarMergedBeanDefinitionPostProcessor")
     public CollapsarMergedBeanDefinitionPostProcessor collapsarMergedBeanDefinitionPostProcessor(
             CachesBeanDefinitionScanParser cachesBeanDefinitionScanParser, MultiCachesBeanDefinitionScanParser multiCachesBeanDefinitionScanParser,
-            PenetrationsBeanDefinitionScanParser penetrationsBeanDefinitionScanParser,
             CollapsarBeanMethodHandler collapsarBeanMethodHandler) {
         return new CollapsarMergedBeanDefinitionPostProcessor(cachesBeanDefinitionScanParser, multiCachesBeanDefinitionScanParser,
-                penetrationsBeanDefinitionScanParser, collapsarBeanMethodHandler);
+                collapsarBeanMethodHandler);
     }
 }

@@ -28,12 +28,12 @@ public class CollapsarBeanMethodHandlerImpl implements CollapsarBeanMethodHandle
     }
 
     @Override
-    public void registerMethod(Method method, Object penetrationsBean, MethodDefinition methodDefinition) {
+    public void registerMethod(Method method, MethodDefinition methodDefinition) {
         final String methodFullName = method.toString();
         if (methodInvokerMap.containsKey(methodFullName)) {
             throw new CollapsarException("请不要重复注册@Caches/@MultiCaches Bean方法['%s']", methodFullName);
         }
-        final MethodInvoker methodInvoker = MethodParseHandler.parseHandleMethod(method, methodDefinition, penetrationsBean);
+        final MethodInvoker methodInvoker = MethodParseHandler.parseHandleMethod(method, methodDefinition);
         methodInvokerMap.put(methodFullName, methodInvoker);
     }
 

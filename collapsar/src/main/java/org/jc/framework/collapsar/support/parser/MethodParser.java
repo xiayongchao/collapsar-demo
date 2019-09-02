@@ -38,24 +38,22 @@ public abstract class MethodParser {
     protected final Operate operate;
     protected final Method method;
     protected final MethodDefinition methodDefinition;
-    protected final Object penetrationsBean;
     protected String[] parameterNames;
     protected ParameterDefinition[] parameterDefinitions;
 
-    public MethodParser(Operate operate, Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
+    public MethodParser(Operate operate, Method method, MethodDefinition methodDefinition) {
         if (!Operate.NONE.equals(operate) && method.isDefault()) {
             throw new CollapsarException("interface default方法[%s]不支持使用[%s]", method.toString(), Operate.ENABLE_METHOD_ANNOTATIONS_STRING);
         }
         this.operate = operate;
         this.method = method;
         this.methodDefinition = methodDefinition;
-        this.penetrationsBean = penetrationsBean;
     }
 
     public MethodInvoker getMethodInvoker() {
         return this.parseMethodFullName()
                 .parseMethodProjectName().parseMethodModuleName().parseMethodConnector()
-                .parseMethodOperate().parseMethodParameter().parseMethodReturnType().parseMethodPenetrations()
+                .parseMethodOperate().parseMethodParameter().parseMethodReturnType()
                 .get();
     }
 
@@ -317,17 +315,7 @@ public abstract class MethodParser {
         return this;
     }
 
-    protected MethodParser parseMethodPenetrations() {
-        Method penetrationsMethod;
-        try {
-            penetrationsMethod = penetrationsBean != null ? penetrationsBean.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes()) : null;
-        } catch (NoSuchMethodException e) {
-            throw new CollapsarException(e, "获取@Penetrations Bean[%s]方法[%s]失败", penetrationsBean.getClass().getName(), method.getName());
-        }
-        get().setPenetrationsBean(penetrationsBean);
-        get().setPenetrationsMethod(penetrationsMethod);
-        return this;
+    protected AbstractMethodInvoker get() {
+        return null;
     }
-
-    protected abstract AbstractMethodInvoker get();
 }

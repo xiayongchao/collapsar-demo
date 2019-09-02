@@ -19,8 +19,8 @@ import java.lang.reflect.Type;
 public class DelMethodParser extends MethodParser {
     private final DelMethodInvoker methodInvoker = new DelMethodInvoker();
 
-    public DelMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        super(Operate.DEL, method, methodDefinition, penetrationsBean);
+    public DelMethodParser(Method method, MethodDefinition methodDefinition) {
+        super(Operate.DEL, method, methodDefinition);
     }
 
     @Override

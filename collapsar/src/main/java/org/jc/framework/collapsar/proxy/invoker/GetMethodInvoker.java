@@ -17,7 +17,7 @@ public class GetMethodInvoker extends AbstractMethodInvoker {
     public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         Object object = cacheRepository.get(generateKey(args), returnType);
         if (object == null) {
-            object = invokePenetrationMethod(self, proceed, args);
+            object = invokeProceedMethod(self, proceed, args);
         }
         return object;
     }

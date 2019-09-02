@@ -19,8 +19,8 @@ import java.lang.reflect.Type;
 public class GetMethodParser extends MethodParser {
     private final GetMethodInvoker methodInvoker = new GetMethodInvoker();
 
-    public GetMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        super(Operate.GET, method, methodDefinition, penetrationsBean);
+    public GetMethodParser(Method method, MethodDefinition methodDefinition) {
+        super(Operate.GET, method, methodDefinition);
     }
 
     @Override

@@ -19,8 +19,8 @@ import java.lang.reflect.Type;
 public class SetMethodParser extends MethodParser {
     private final SetMethodInvoker methodInvoker = new SetMethodInvoker();
 
-    public SetMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        super(Operate.SET, method, methodDefinition, penetrationsBean);
+    public SetMethodParser(Method method, MethodDefinition methodDefinition) {
+        super(Operate.SET, method, methodDefinition);
     }
 
     @Override

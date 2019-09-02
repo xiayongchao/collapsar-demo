@@ -20,7 +20,7 @@ public class SetMethodInvoker extends AbstractMethodInvoker {
     public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         cacheRepository.set(generateKey(args), selectValueParameter(args),
                 expire);
-        return invokePenetrationMethod(self, proceed, args);
+        return invokeProceedMethod(self, proceed, args);
     }
 
     private Object selectValueParameter(Object[] args) {

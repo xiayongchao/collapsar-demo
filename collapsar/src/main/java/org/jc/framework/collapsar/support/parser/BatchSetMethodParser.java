@@ -21,8 +21,8 @@ import java.util.List;
 public class BatchSetMethodParser extends MethodParser {
     private final BatchSetMethodInvoker methodInvoker = new BatchSetMethodInvoker();
 
-    public BatchSetMethodParser(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        super(Operate.BATCH_SET, method, methodDefinition, penetrationsBean);
+    public BatchSetMethodParser(Method method, MethodDefinition methodDefinition) {
+        super(Operate.BATCH_SET, method, methodDefinition);
     }
 
     @Override

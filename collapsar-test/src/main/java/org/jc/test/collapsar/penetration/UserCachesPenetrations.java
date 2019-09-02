@@ -1,7 +1,6 @@
 package org.jc.test.collapsar.penetration;
 
 import org.jc.framework.collapsar.annotation.Key;
-import org.jc.framework.collapsar.annotation.Penetrations;
 import org.jc.framework.collapsar.annotation.Value;
 import org.jc.framework.collapsar.support.parser.Optional;
 import org.jc.test.collapsar.caches.CommonCaches;
@@ -18,7 +17,6 @@ import java.util.List;
  * @author xiayc
  * @date 2019/8/28
  */
-@Penetrations
 public class UserCachesPenetrations implements UserCaches {
     @Autowired
     private UserCaches userCaches;

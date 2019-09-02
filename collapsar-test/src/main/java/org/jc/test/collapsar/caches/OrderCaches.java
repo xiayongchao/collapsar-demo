@@ -18,5 +18,6 @@ public abstract class OrderCaches {
     @DelOperate
     public void delById(@Key("id") Long id) {
         System.out.println("我是抽象类的delById");
+        commonCaches.delUserById(23L);
     }
 }

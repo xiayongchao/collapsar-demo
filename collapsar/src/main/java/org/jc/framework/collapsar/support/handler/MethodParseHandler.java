@@ -19,7 +19,7 @@ public abstract class MethodParseHandler {
      * @param methodDefinition
      * @return
      */
-    public abstract MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition, Object penetrationsBean);
+    public abstract MethodInvoker handleMethod(Method method, MethodDefinition methodDefinition);
 
     public MethodParseHandler getNextHandler() {
         return nextHandler;
@@ -47,7 +47,7 @@ public abstract class MethodParseHandler {
         return setMethodParseHandler;
     }
 
-    public static MethodInvoker parseHandleMethod(Method method, MethodDefinition methodDefinition, Object penetrationsBean) {
-        return METHOD_PARSE_HANDLER.handleMethod(method, methodDefinition, penetrationsBean);
+    public static MethodInvoker parseHandleMethod(Method method, MethodDefinition methodDefinition) {
+        return METHOD_PARSE_HANDLER.handleMethod(method, methodDefinition);
     }
 }

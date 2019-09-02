@@ -13,6 +13,6 @@ public class DelMethodInvoker extends AbstractMethodInvoker {
     @Override
     public Object invoke(CacheRepository cacheRepository, Object self, Method proceed, Object[] args) throws InvocationTargetException, IllegalAccessException {
         cacheRepository.del(generateKey(args));
-        return invokePenetrationMethod(self, proceed, args);
+        return invokeProceedMethod(self, proceed, args);
     }
 }
