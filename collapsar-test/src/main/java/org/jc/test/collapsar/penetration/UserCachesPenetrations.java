@@ -2,7 +2,7 @@ package org.jc.test.collapsar.penetration;
 
 import org.jc.framework.collapsar.annotation.Key;
 import org.jc.framework.collapsar.annotation.Value;
-import org.jc.framework.collapsar.support.parser.Optional;
+import org.jc.framework.collapsar.core.parser.Optional;
 import org.jc.test.collapsar.caches.CommonCaches;
 import org.jc.test.collapsar.caches.UserCaches;
 import org.jc.test.collapsar.modal.Order;

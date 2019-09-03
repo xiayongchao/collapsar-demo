@@ -1,7 +1,6 @@
 package org.jc.framework.collapsar.definition;
 
 import org.jc.framework.collapsar.annotation.CollapsarComponentScan;
-import org.jc.framework.collapsar.annotation.EnableCollapsarConfiguration;
 
 import java.util.Arrays;
 
@@ -38,18 +37,11 @@ public class CollapsarComponentScanDefinition {
      */
     private final String connector;
 
-    public CollapsarComponentScanDefinition(EnableCollapsarConfiguration enableCollapsarConfiguration) {
-        this.projectName = enableCollapsarConfiguration.projectName();
-        this.basePackages = enableCollapsarConfiguration.basePackages();
-        this.resourcePattern = enableCollapsarConfiguration.resourcePattern();
-        this.connector = enableCollapsarConfiguration.connector();
-    }
-
-    public CollapsarComponentScanDefinition(CollapsarComponentScan collapsarComponentScan) {
-        this.projectName = collapsarComponentScan.projectName();
-        this.basePackages = collapsarComponentScan.basePackages();
-        this.resourcePattern = collapsarComponentScan.resourcePattern();
-        this.connector = collapsarComponentScan.connector();
+    public CollapsarComponentScanDefinition(CollapsarComponentScan.Rule rule) {
+        this.projectName = rule.projectName();
+        this.basePackages = rule.basePackages();
+        this.resourcePattern = rule.resourcePattern();
+        this.connector = rule.connector();
     }
 
     public String getProjectName() {

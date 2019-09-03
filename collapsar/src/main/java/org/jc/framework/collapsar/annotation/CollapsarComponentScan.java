@@ -12,31 +12,37 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CollapsarComponentScan {
-    /**
-     * 项目名称/缓存一级结构名称
-     *
-     * @return
-     */
-    String projectName() default Strings.EMPTY_STRING;
+    Rule[] scope();
 
-    /**
-     * 扫描包名列表
-     *
-     * @return
-     */
-    String[] basePackages() default {};
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({})
+    @interface Rule {
+        /**
+         * 项目名称/缓存一级结构名称
+         *
+         * @return
+         */
+        String projectName() default Strings.EMPTY_STRING;
 
-    /**
-     * 匹配模式
-     *
-     * @return
-     */
-    String resourcePattern() default "**/*.class";
+        /**
+         * 扫描包名列表
+         *
+         * @return
+         */
+        String[] basePackages() default {};
 
-    /**
-     * 缓存Key直接的连接符
-     *
-     * @return
-     */
-    String connector() default ":";
+        /**
+         * 匹配模式
+         *
+         * @return
+         */
+        String resourcePattern() default "**/*.class";
+
+        /**
+         * 缓存Key直接的连接符
+         *
+         * @return
+         */
+        String connector() default ":";
+    }
 }

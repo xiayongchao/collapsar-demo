@@ -1,7 +1,7 @@
 package org.jc.test.collapsar.caches;
 
 import org.jc.framework.collapsar.annotation.*;
-import org.jc.framework.collapsar.support.parser.Optional;
+import org.jc.framework.collapsar.core.parser.Optional;
 import org.jc.test.collapsar.modal.Order;
 import org.jc.test.collapsar.modal.User;
 

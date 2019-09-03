@@ -1,6 +1,6 @@
 package org.jc.test.collapsar;
 
-import org.jc.framework.collapsar.support.parser.Optional;
+import org.jc.framework.collapsar.core.parser.Optional;
 import org.jc.test.collapsar.caches.AskCaches;
 import org.jc.test.collapsar.caches.OrderCaches;
 import org.jc.test.collapsar.caches.UserCaches;
